@@ -1,25 +1,16 @@
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
-import mysql.connector
-from mysql.connector import pooling
+
 from datetime import date
 import os
+import psycopg2
+
 app = Flask(__name__)
 CORS(app)
-
-db_config = {
-    "host":     os.environ.get("MYSQLHOST", "sql12.freesqldatabase.com"),
-    "user":     os.environ.get("MYSQLUSER", "sql12825205"),
-    "password": os.environ.get("MYSQLPASSWORD", "P1WiyYidYD"),
-    "database": os.environ.get("MYSQLDATABASE", "sql12825205"),
-    "port":     int(os.environ.get("MYSQLPORT", 3306)),
-}
-
-pool = pooling.MySQLConnectionPool(pool_name="dojo_pool", pool_size=5, **db_config)
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
 def get_conn():
-    return pool.get_connection()
-
+    return psycopg2.connect(DATABASE_URL)
 
 # ── Dojos ────────────────────────────────────────────────
 
