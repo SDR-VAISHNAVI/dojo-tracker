@@ -16,8 +16,9 @@
       --card:    #171e27;
       --border:  #243040;
       --accent:  #00c8ff;
-      --accent2: #0077ff;
+      --accent2: #0055cc;
       --gold:    #ffca28;
+      --red:     #ff4757;
       --text:    #d4dce8;
       --muted:   #5a7080;
       --present: #00e676;
@@ -25,35 +26,56 @@
       --r: 14px;
       --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
-    html, body { height: 100%; overflow: hidden; background: var(--bg); }
-    body { font-family: 'Nunito', sans-serif; font-size: 15px; color: var(--text); display: flex; flex-direction: column; }
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  overscroll-behavior: none;        /* add this */
+  overscroll-behavior-y: none;      /* add this */
+  -webkit-overflow-scrolling: touch;
+}    body { font-family: 'Nunito', sans-serif; font-size: 15px; color: var(--text); display: flex; flex-direction: column; }
 
-    .topbar { background: var(--surface); border-bottom: 1px solid var(--border); padding: 14px 16px 12px; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-    .topbar-emblem { width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 0 16px rgba(0,200,255,0.3); }
-    .topbar-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 3px; color: #fff; line-height: 1; }
-    .topbar-sub   { font-size: 10px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-top: 1px; }
-    .topbar-right { margin-left: auto; }
-    .page-label   { font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 2px; color: var(--accent); }
+    /* ── TOPBAR ── */
+    .topbar { background: var(--surface); border-bottom: 2px solid var(--border); padding: 12px 16px 10px; display: flex; align-items: center; gap: 10px; flex-shrink: 0; position: relative; }
+    .topbar::after { content: ''; position: absolute; bottom: -1px; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, var(--accent), transparent 60%); opacity: 0.4; }
+    .topbar-emblem { width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: 0 0 18px rgba(0,200,255,0.35); }
+    .topbar-title { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 4px; color: #fff; line-height: 1; }
+    .topbar-sub   { font-size: 9px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 1px; }
+    .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+    .page-label   { font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 2px; color: var(--accent); text-align: right; }
+    .back-btn { background: rgba(0,200,255,0.1); border: 1px solid rgba(0,200,255,0.3); color: var(--accent); padding: 5px 12px; border-radius: 8px; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 800; cursor: pointer; display: none; align-items: center; gap: 5px; }
+    .back-btn.visible { display: flex; }
 
-    .scroll-area { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding-bottom: calc(72px + var(--safe-bottom)); }
-
-    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: calc(60px + var(--safe-bottom)); padding-bottom: var(--safe-bottom); background: var(--surface); border-top: 1px solid var(--border); display: flex; z-index: 200; }
+    /* ── SCROLL + BOTTOM NAV ── */
+.scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: none;        /* add this */
+  overscroll-behavior-y: none;      /* add this */
+  padding-bottom: calc(68px + var(--safe-bottom));
+}    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: calc(58px + var(--safe-bottom)); padding-bottom: var(--safe-bottom); background: var(--surface); border-top: 1px solid var(--border); display: flex; z-index: 200; }
+    .bottom-nav::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0.25; }
     .nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; cursor: pointer; border: none; background: transparent; color: var(--muted); transition: color 0.2s; font-family: 'Nunito', sans-serif; }
-    .nav-btn .ni { font-size: 20px; transition: transform 0.2s; }
-    .nav-btn .nl { font-size: 9px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; }
+    .nav-btn .ni { font-size: 19px; transition: transform 0.2s; }
+    .nav-btn .nl { font-size: 8.5px; font-weight: 900; letter-spacing: 0.5px; text-transform: uppercase; }
     .nav-btn.active { color: var(--accent); }
     .nav-btn.active .ni { transform: translateY(-2px); }
 
+    /* ── PAGES ── */
     .page { display: none; padding: 12px; }
     .page.active { display: block; }
 
+    /* ── CARDS ── */
     .card { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 14px; margin-bottom: 12px; }
     .card-label { font-size: 9px; font-weight: 900; letter-spacing: 2.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
     .card-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
+    /* ── FIELDS ── */
     .field { margin-bottom: 10px; }
     .field label { display: block; font-size: 10px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
-    select, input[type="date"], input[type="text"] {
+    select, input[type="date"], input[type="text"], input[type="tel"] {
       width: 100%; padding: 11px 13px;
       background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 10px;
       font-family: 'Nunito', sans-serif; font-size: 15px; font-weight: 600;
@@ -64,6 +86,7 @@
     input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.5); }
     input::placeholder { color: var(--muted); }
 
+    /* ── BUTTONS ── */
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 11px 18px; border: none; border-radius: 10px; font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 800; letter-spacing: 0.5px; cursor: pointer; transition: opacity 0.15s, transform 0.1s; white-space: nowrap; width: 100%; }
     .btn:active { transform: scale(0.96); opacity: 0.8; }
     .btn:disabled { opacity: 0.4; cursor: not-allowed; }
@@ -72,22 +95,28 @@
     .btn-danger   { background: rgba(255,71,87,0.15); color: var(--absent); border: 1px solid rgba(255,71,87,0.3); }
     .btn-ghost    { background: rgba(255,255,255,0.05); color: var(--text); border: 1px solid var(--border); }
     .btn-whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); color: #fff; }
+    .btn-gold     { background: rgba(255,202,40,0.15); color: var(--gold); border: 1px solid rgba(255,202,40,0.35); }
     .btn-sm       { padding: 7px 12px; font-size: 12px; width: auto; }
 
+    /* ── STATS ── */
     .stats-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 12px; }
+    .stats-row.cols3 { grid-template-columns: repeat(3, 1fr); }
+    .stats-row.cols4 { grid-template-columns: repeat(4, 1fr); }
     .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--r); padding: 14px 12px; }
     .stat-label { font-size: 9px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
-    .stat-value { font-size: 30px; font-weight: 900; color: #fff; margin-top: 4px; line-height: 1; }
+    .stat-value { font-size: 28px; font-weight: 900; color: #fff; margin-top: 4px; line-height: 1; }
     .stat-value.accent { color: var(--accent); }
     .stat-value.gold   { color: var(--gold); }
     .stat-value.green  { color: var(--present); }
     .stat-value.red    { color: var(--absent); }
 
+    /* ── PROGRESS ── */
     .progress-wrap { margin-bottom: 12px; }
-    .progress-meta { display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; letter-spacing: 1px; color: var(--muted); margin-bottom: 6px; }
+    .progress-meta { display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; color: var(--muted); margin-bottom: 6px; }
     .progress-track { background: var(--border); border-radius: 20px; height: 8px; overflow: hidden; }
     .progress-fill  { height: 100%; border-radius: 20px; background: linear-gradient(90deg, var(--present), #00897b); transition: width 0.6s ease; }
 
+    /* ── TABLE ── */
     .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     table { width: 100%; border-collapse: collapse; font-size: 14px; }
     thead th { padding: 8px 10px; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); font-weight: 800; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; }
@@ -97,79 +126,153 @@
     .num-cell { color: var(--muted); font-size: 12px; font-weight: 700; width: 28px; }
     .s-name { font-weight: 800; color: #fff; font-size: 15px; }
 
-    .belt-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: capitalize; white-space: nowrap; }
-    .belt-white  { background: rgba(255,255,255,0.08); color: #ddd; }
-    .belt-yellow { background: rgba(255,215,0,0.12);   color: #ffd700; }
-    .belt-orange { background: rgba(255,165,0,0.12);   color: #ffa500; }
-    .belt-green  { background: rgba(0,230,118,0.12);   color: #00e676; }
-    .belt-blue   { background: rgba(0,229,255,0.12);   color: #00e5ff; }
-    .belt-purple { background: rgba(179,0,255,0.12);   color: #bf55ec; }
-    .belt-brown  { background: rgba(139,90,43,0.2);    color: #cd853f; }
-    .belt-black  { background: rgba(255,255,255,0.05); color: #aaa; border: 1px solid #333; }
+    /* ── BELT BADGES ── */
+    .belt-badge { display: inline-flex; align-items: center; gap: 3px; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 700; text-transform: capitalize; white-space: nowrap; }
+    .belt-white   { background: rgba(255,255,255,0.08); color: #ddd; }
+    .belt-yellow  { background: rgba(255,215,0,0.12);   color: #ffd700; }
+    .belt-orange  { background: rgba(255,165,0,0.12);   color: #ffa500; }
+    .belt-green   { background: rgba(0,230,118,0.12);   color: #00e676; }
+    .belt-blue    { background: rgba(0,229,255,0.12);   color: #00e5ff; }
+    .belt-purple  { background: rgba(179,0,255,0.12);   color: #bf55ec; }
+    .belt-brown   { background: rgba(139,90,43,0.2);    color: #cd853f; }
+    .belt-black   { background: rgba(255,255,255,0.05); color: #aaa; border: 1px solid #333; }
 
+    /* ── ATT BUTTONS ── */
     .att-btns { display: flex; gap: 6px; }
     .att-btn { width: 34px; height: 34px; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; font-weight: 900; transition: all 0.15s; display: flex; align-items: center; justify-content: center; }
     .btn-present { background: rgba(0,230,118,0.1); color: var(--present); border: 1px solid rgba(0,230,118,0.25); }
     .btn-present.active { background: var(--present); color: #000; box-shadow: 0 0 10px rgba(0,230,118,0.4); }
     .btn-absent  { background: rgba(255,71,87,0.1);  color: var(--absent);  border: 1px solid rgba(255,71,87,0.25); }
-    .btn-absent.active { background: var(--absent); color: #fff; box-shadow: 0 0 10px rgba(255,71,87,0.4); }
+    .btn-absent.active  { background: var(--absent); color: #fff; box-shadow: 0 0 10px rgba(255,71,87,0.4); }
 
-    .status-pill { padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; white-space: nowrap; }
+    .status-pill { padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 800; text-transform: uppercase; white-space: nowrap; }
     .status-present { background: rgba(0,230,118,0.12); color: var(--present); }
     .status-absent  { background: rgba(255,71,87,0.12);  color: var(--absent); }
     .status-pending { background: rgba(255,255,255,0.05); color: var(--muted); }
 
-    /* Fee toggle — bigger, clearer tap targets */
+    /* ── FEE TOGGLE ── */
     .fee-toggle { display: flex; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); min-width: 140px; }
-    .fee-toggle-btn { flex: 1; padding: 9px 6px; border: none; cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 800; letter-spacing: 0.3px; text-transform: uppercase; transition: all 0.15s; background: transparent; color: var(--muted); }
+    .fee-toggle-btn { flex: 1; padding: 8px 6px; border: none; cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 800; text-transform: uppercase; transition: all 0.15s; background: transparent; color: var(--muted); }
     .fee-toggle-btn.paid   { color: var(--present); }
     .fee-toggle-btn.unpaid { color: var(--absent); }
-    .fee-toggle-btn.active.paid   { background: rgba(0,230,118,0.22); color: var(--present); }
-    .fee-toggle-btn.active.unpaid { background: rgba(255,71,87,0.22);  color: var(--absent); }
+    .fee-toggle-btn.active.paid   { background: rgba(0,230,118,0.2); }
+    .fee-toggle-btn.active.unpaid { background: rgba(255,71,87,0.2); }
 
-    .tab-row { display: flex; gap: 8px; margin-bottom: 12px; }
-    .rpill { padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+    /* ── PILLS ── */
+    .tab-row { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+    .rpill { padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-family: 'Nunito', sans-serif; font-size: 11px; font-weight: 800; text-transform: uppercase; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
     .rpill.active        { background: rgba(0,200,255,0.12); border-color: var(--accent); color: var(--accent); }
-    .rpill[data-f="present"].active { background: rgba(0,230,118,0.12); border-color: var(--present); color: var(--present); }
-    .rpill[data-f="absent"].active  { background: rgba(255,71,87,0.12);  border-color: var(--absent);  color: var(--absent); }
-    .rpill[data-f="none"].active    { background: rgba(255,202,40,0.12); border-color: var(--gold);    color: var(--gold); }
+    .rpill[data-f="present"].active, .rpill.green-pill.active { background: rgba(0,230,118,0.12); border-color: var(--present); color: var(--present); }
+    .rpill[data-f="absent"].active,  .rpill.red-pill.active   { background: rgba(255,71,87,0.12);  border-color: var(--absent);  color: var(--absent); }
+    .rpill[data-f="none"].active     { background: rgba(255,202,40,0.12); border-color: var(--gold); color: var(--gold); }
 
+    /* ── SEARCH ── */
     .search-wrap { position: relative; margin-bottom: 10px; }
     .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 15px; pointer-events: none; }
     .search-wrap input { padding-left: 36px; }
 
+    /* ── ACTION BAR ── */
     .action-bar { padding-top: 12px; border-top: 1px solid var(--border); margin-top: 12px; }
     .summary { font-size: 12px; color: var(--muted); font-weight: 700; margin-bottom: 10px; }
     .summary b { color: var(--text); }
 
+    /* ── PLACEHOLDER ── */
     .placeholder { text-align: center; padding: 32px 16px; color: var(--muted); font-size: 14px; font-weight: 600; }
     .placeholder span { display: block; font-size: 36px; margin-bottom: 10px; }
 
+    /* ── SPINNER ── */
     .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    .perfect-card { background: rgba(255,202,40,0.05); border: 1px solid rgba(255,202,40,0.18); border-radius: var(--r); padding: 14px; margin-top: 10px; }
-    .perfect-card .card-label { color: var(--gold); }
-    .perfect-card .card-label::after { background: rgba(255,202,40,0.2); }
-    .perfect-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid rgba(255,202,40,0.08); }
+    /* ── PERFECT / BELT TEST CARDS ── */
+    .perfect-card { background: rgba(255,202,40,0.04); border: 1px solid rgba(255,202,40,0.18); border-radius: var(--r); padding: 14px; margin-top: 10px; }
+    .perfect-row { display: flex; align-items: center; gap: 8px; padding: 9px 0; border-bottom: 1px solid rgba(255,202,40,0.08); }
     .perfect-row:last-child { border-bottom: none; }
     .perfect-num  { font-size: 12px; font-weight: 700; color: var(--muted); width: 22px; flex-shrink: 0; }
     .perfect-name { font-weight: 800; color: #fff; flex: 1; font-size: 15px; }
 
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(4px); display: none; align-items: flex-end; justify-content: center; z-index: 500; }
+    /* Belt test checkbox rows */
+    .bt-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(36,48,64,0.5); }
+    .bt-row:last-child { border-bottom: none; }
+    .bt-check { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--border); background: var(--surface); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.15s; font-size: 13px; }
+    .bt-check.ineligible { border-color: var(--absent); background: rgba(255,71,87,0.15); }
+    .bt-info { flex: 1; min-width: 0; }
+    .bt-arrow { font-size: 11px; color: var(--muted); white-space: nowrap; }
+    .bt-arrow.promoted { color: var(--present); }
+    .bt-arrow.skipped  { color: var(--absent); }
+
+    /* ── STUDENT PROFILE ── */
+    .profile-hero { background: linear-gradient(135deg, rgba(0,200,255,0.08), rgba(0,85,204,0.12)); border: 1px solid rgba(0,200,255,0.2); border-radius: var(--r); padding: 20px; margin-bottom: 12px; }
+    .profile-avatar { width: 56px; height: 56px; border-radius: 14px; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 12px; box-shadow: 0 0 20px rgba(0,200,255,0.3); }
+    .profile-name { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: #fff; line-height: 1; }
+    .profile-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; align-items: center; }
+    .profile-phone { font-size: 13px; color: var(--muted); font-weight: 700; }
+
+    /* Circular progress */
+    .circ-prog { position: relative; width: 80px; height: 80px; flex-shrink: 0; }
+    .circ-prog svg { transform: rotate(-90deg); }
+    .circ-prog .track { fill: none; stroke: var(--border); stroke-width: 6; }
+    .circ-prog .fill  { fill: none; stroke-width: 6; stroke-linecap: round; transition: stroke-dashoffset 0.8s ease; }
+    .circ-prog .fill.green { stroke: var(--present); }
+    .circ-prog .fill.red   { stroke: var(--absent); }
+    .circ-label { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 900; }
+    .circ-label .pct  { font-size: 16px; color: #fff; line-height: 1; }
+    .circ-label .sub  { font-size: 8px; color: var(--muted); font-weight: 800; letter-spacing: 1px; }
+
+    /* Attendance history timeline */
+    .att-month-block { margin-bottom: 14px; }
+    .att-month-label { font-size: 10px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .att-dots { display: flex; flex-wrap: wrap; gap: 5px; }
+    .att-dot { width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; cursor: default; }
+    .att-dot.present { background: rgba(0,230,118,0.15); color: var(--present); border: 1px solid rgba(0,230,118,0.3); }
+    .att-dot.absent  { background: rgba(255,71,87,0.15);  color: var(--absent);  border: 1px solid rgba(255,71,87,0.3); }
+
+    /* Fee history */
+    .fee-month-row { display: flex; align-items: center; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid rgba(36,48,64,0.5); }
+    .fee-month-row:last-child { border-bottom: none; }
+    .fee-month-name { font-weight: 800; color: var(--text); font-size: 14px; }
+    .fee-month-year { font-size: 11px; color: var(--muted); font-weight: 700; }
+
+    /* Student row - clickable */
+    .s-row-clickable { cursor: pointer; transition: background 0.15s; }
+    .s-row-clickable:active { background: rgba(0,200,255,0.05); }
+
+    /* ── BELT TEST DEDICATION LEADERBOARD ── */
+    .dedication-card { background: rgba(255,202,40,0.04); border: 1px solid rgba(255,202,40,0.2); border-radius: var(--r); padding: 14px; margin-bottom: 10px; }
+    .ded-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(36,48,64,0.4); }
+    .ded-row:last-child { border-bottom: none; }
+    .ded-rank { font-family: 'Bebas Neue', sans-serif; font-size: 20px; width: 28px; flex-shrink: 0; }
+    .ded-rank.gold   { color: var(--gold); }
+    .ded-rank.silver { color: #b0bec5; }
+    .ded-rank.bronze { color: #cd853f; }
+    .ded-rank.other  { color: var(--muted); font-size: 14px; font-family: 'Nunito', sans-serif; font-weight: 900; }
+    .ded-info { flex: 1; min-width: 0; }
+    .ded-name { font-weight: 800; color: #fff; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ded-sub  { font-size: 11px; color: var(--muted); font-weight: 700; margin-top: 2px; }
+    .ded-badge { text-align: right; flex-shrink: 0; }
+    .ded-att  { font-size: 18px; font-weight: 900; line-height: 1; }
+    .ded-att.good { color: var(--present); }
+    .ded-att.warn { color: var(--gold); }
+    .ded-att.bad  { color: var(--absent); }
+    .ded-att-sub { font-size: 9px; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+
+    /* ── MODAL ── */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.78); backdrop-filter: blur(5px); display: none; align-items: flex-end; justify-content: center; z-index: 500; }
     .modal-overlay.open { display: flex; }
-    .modal { background: var(--card); border: 1px solid var(--border); border-radius: 20px 20px 0 0; padding: 20px; width: 100%; max-height: 90vh; overflow-y: auto; animation: slideUp 0.25s ease; }
+    .modal { background: var(--card); border: 1px solid var(--border); border-top: 2px solid var(--accent); border-radius: 20px 20px 0 0; padding: 20px; width: 100%; max-height: 92vh; overflow-y: auto; animation: slideUp 0.25s ease; }
     @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
     .modal-handle { width: 40px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 18px; }
     .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
     .modal-header h3 { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; color: #fff; }
-    .modal-close { background: none; border: none; color: var(--muted); font-size: 22px; cursor: pointer; padding: 4px; line-height: 1; }
+    .modal-close { background: none; border: none; color: var(--muted); font-size: 22px; cursor: pointer; padding: 4px; }
     .modal-footer { display: flex; gap: 10px; margin-top: 18px; }
     .modal-footer .btn { flex: 1; }
 
-    .wa-box { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px; font-size: 13px; line-height: 1.8; color: var(--text); white-space: pre-wrap; word-break: break-word; max-height: 320px; overflow-y: auto; margin-top: 12px; font-family: monospace; }
+    /* ── WHATSAPP BOX ── */
+    .wa-box { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px; font-size: 13px; line-height: 1.85; color: var(--text); white-space: pre-wrap; word-break: break-word; max-height: 300px; overflow-y: auto; margin-top: 12px; font-family: monospace; }
 
-    #toast { position: fixed; bottom: calc(72px + var(--safe-bottom) + 10px); left: 12px; right: 12px; padding: 12px 18px; border-radius: 12px; font-size: 14px; font-weight: 800; opacity: 0; transform: translateY(10px); transition: all 0.3s; z-index: 9999; pointer-events: none; text-align: center; }
+    /* ── TOAST ── */
+    #toast { position: fixed; bottom: calc(68px + var(--safe-bottom) + 10px); left: 12px; right: 12px; padding: 12px 18px; border-radius: 12px; font-size: 14px; font-weight: 800; opacity: 0; transform: translateY(10px); transition: all 0.3s; z-index: 9999; pointer-events: none; text-align: center; }
     #toast.show { opacity: 1; transform: translateY(0); }
     #toast.success { background: var(--present); color: #000; }
     #toast.error   { background: var(--absent);  color: #fff; }
@@ -178,13 +281,12 @@
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-    .sect { font-size: 10px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
 
-    .fee-report-card { background: rgba(0,200,255,0.04); border: 1px solid rgba(0,200,255,0.18); border-radius: var(--r); padding: 14px; margin-top: 12px; }
-    .fee-report-card .card-label { color: var(--accent); }
+    /* ── SECTION DIVIDER IN FEE GROUPS ── */
+    .batch-hdr { font-size: 9px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); padding: 8px 0 6px; border-bottom: 1px solid var(--border); margin-bottom: 2px; display: flex; align-items: center; justify-content: space-between; }
 
-    /* Loading overlay for monthly report */
-    .loading-row { text-align: center; padding: 24px; color: var(--muted); font-size: 13px; font-weight: 700; }
+    /* ── BATCH GROUP HEADER (belt test) ── */
+    .bt-batch-hdr { font-size: 9px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); padding: 8px 0 4px; border-bottom: 1px solid var(--border); margin-bottom: 4px; }
   </style>
 </head>
 <body>
@@ -195,17 +297,20 @@
     <div class="topbar-title">Dojo</div>
     <div class="topbar-sub">Management System</div>
   </div>
-  <div class="topbar-right"><div class="page-label" id="topPageLabel">Attendance</div></div>
+  <div class="topbar-right">
+    <button class="back-btn" id="backBtn" onclick="goBack()">← Back</button>
+    <div class="page-label" id="topPageLabel">Attendance</div>
+  </div>
 </div>
 
-<div class="scroll-area">
+<div class="scroll-area" id="scrollArea">
 
   <!-- ══ ATTENDANCE ══ -->
   <div class="page active" id="page-attendance">
     <div class="card">
       <div class="card-label">Session Setup</div>
       <div class="field"><label>Dojo</label><select id="dojoSelect"></select></div>
-      <div class="field"><label>Batch</label><select id="batchSelect" disabled><option value="">— Select Dojo First —</option></select></div>
+      <div class="field"><label>Batch</label><select id="batchSelect" disabled><option>— Select Dojo First —</option></select></div>
       <div class="field"><label>Date</label><input type="date" id="dateInput"/></div>
       <button class="btn btn-primary" id="loadBtn" onclick="loadAttStudents()" disabled style="margin-top:4px;">Load Students</button>
     </div>
@@ -230,41 +335,46 @@
 
   <!-- ══ STUDENTS ══ -->
   <div class="page" id="page-students">
-    <div class="stats-row">
-      <div class="stat-card"><div class="stat-label">Total Students</div><div class="stat-value accent" id="statTotal">—</div></div>
-      <div class="stat-card"><div class="stat-label">Black Belts</div><div class="stat-value gold" id="statBlack">—</div></div>
-    </div>
-    <div class="card">
-      <div class="card-label">Filter</div>
-      <div class="field"><label>Dojo</label><select id="sDojo"></select></div>
-      <div class="field"><label>Batch</label><select id="sBatch" onchange="filterStudents()"><option value="">All Batches</option></select></div>
-      <div class="field">
-        <label>Belt</label>
-        <select id="sBelt" onchange="filterStudents()">
-          <option value="">All Belts</option>
-          <option>White</option><option>Yellow</option><option>Orange</option>
-          <option>Green</option><option>Blue</option>
-          <option>Purple 1</option><option>Purple 2</option>
-          <option>Brown 1</option><option>Brown 2</option><option>Black</option>
-        </select>
+    <div id="students-list-view">
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-label">Total Students</div><div class="stat-value accent" id="statTotal">—</div></div>
+        <div class="stat-card"><div class="stat-label">Black Belts</div><div class="stat-value gold" id="statBlack">—</div></div>
+      </div>
+      <div class="card">
+        <div class="card-label">Filter</div>
+        <div class="field"><label>Dojo</label><select id="sDojo"></select></div>
+        <div class="field"><label>Batch</label><select id="sBatch" onchange="filterStudents()"><option value="">All Batches</option></select></div>
+        <div class="field">
+          <label>Belt</label>
+          <select id="sBelt" onchange="filterStudents()">
+            <option value="">All Belts</option>
+            <option>White</option><option>Yellow</option><option>Orange</option>
+            <option>Green</option><option>Blue</option>
+            <option>Purple 1</option><option>Purple 2</option>
+            <option>Brown 1</option><option>Brown 2</option><option>Black</option>
+          </select>
+        </div>
+      </div>
+      <div class="card">
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="sSearch" placeholder="Search name…" oninput="filterStudents()"/>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px;">
+          <div style="font-size:10px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(--muted);" id="studentCount"></div>
+          <button class="btn btn-primary btn-sm" onclick="openAddModal()">＋ Add Student</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Student</th><th>Actions</th></tr></thead>
+            <tbody id="sTable"><tr><td colspan="3"><div class="placeholder"><span>👤</span>Select a dojo</div></td></tr></tbody>
+          </table>
+        </div>
       </div>
     </div>
-    <div class="card">
-      <div class="search-wrap">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="sSearch" placeholder="Search name…" oninput="filterStudents()"/>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px;">
-        <div class="sect" id="studentCount"></div>
-        <button class="btn btn-primary btn-sm" onclick="openAddModal()">＋ Add Student</button>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>#</th><th>Student</th><th>Actions</th></tr></thead>
-          <tbody id="sTable"><tr><td colspan="3"><div class="placeholder"><span>👤</span>Select a dojo</div></td></tr></tbody>
-        </table>
-      </div>
-    </div>
+
+    <!-- STUDENT PROFILE VIEW -->
+    <div id="student-profile-view" style="display:none;"></div>
   </div>
 
   <!-- ══ REPORTS ══ -->
@@ -283,20 +393,17 @@
         <div class="field"><label>Date</label><input type="date" id="rDate"/></div>
         <button class="btn btn-primary" onclick="loadReport()" style="margin-top:4px;">Generate Report</button>
       </div>
-
       <div id="rStatsArea" style="display:none;">
-        <div class="stats-row">
+        <div class="stats-row cols3">
           <div class="stat-card"><div class="stat-label">Total</div><div class="stat-value accent" id="rTotal">0</div></div>
           <div class="stat-card"><div class="stat-label">Present</div><div class="stat-value green" id="rPresent">0</div></div>
           <div class="stat-card"><div class="stat-label">Absent</div><div class="stat-value red" id="rAbsent">0</div></div>
-          <div class="stat-card"><div class="stat-label">Rate</div><div class="stat-value accent" id="rPercent">—</div></div>
         </div>
         <div class="progress-wrap">
           <div class="progress-meta"><span>Attendance Rate</span><span id="rProgressLabel"></span></div>
           <div class="progress-track"><div class="progress-fill" id="rProgressBar" style="width:0%"></div></div>
         </div>
       </div>
-
       <div class="card" id="rTableCard" style="display:none;">
         <div class="card-label">Records</div>
         <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px;">
@@ -313,7 +420,6 @@
         </div>
         <div class="action-bar"><div class="summary" id="rTableCount"></div></div>
       </div>
-
       <div id="rPlaceholder">
         <div class="card"><div class="placeholder"><span>📊</span>Select dojo, batch and date then tap Generate</div></div>
       </div>
@@ -322,12 +428,14 @@
     <!-- MONTHLY — NO ABSENCES -->
     <div id="r-monthly" style="display:none;">
       <div class="card">
-        <div class="card-label">No Absences — Monthly</div>
+        <div class="card-label">Zero Absences — Monthly</div>
         <p style="font-size:11px;color:var(--muted);margin-bottom:12px;font-weight:700;">
-          Shows students who were <b style="color:var(--text)">never marked absent</b> this month.
-          Students with no attendance records at all are excluded. Unmarked days don't count as absences.
+          Shows students <b style="color:var(--text)">never marked absent</b> this month. Students with no records are excluded.
         </p>
-        <div class="field"><label>Dojo</label><select id="mwDojo"></select></div>
+        <div class="field">
+          <label>Dojo</label>
+          <select id="mwDojo"><option value="all">🌐 All Dojos</option></select>
+        </div>
         <div class="field"><label>Batch (optional)</label><select id="mwBatch"><option value="">All Batches</option></select></div>
         <div class="field">
           <label>Month</label>
@@ -341,32 +449,28 @@
           </select>
         </div>
         <div class="field"><label>Year</label><select id="mwYear"></select></div>
-        <button class="btn btn-primary" id="mwFindBtn" onclick="loadNoAbsences()">Find Students with No Absences</button>
+        <button class="btn btn-primary" id="mwFindBtn" onclick="loadNoAbsences()">Find Students with Zero Absences</button>
       </div>
 
       <div id="mwResults" style="display:none;">
         <div class="stats-row">
           <div class="stat-card"><div class="stat-label">Total Students</div><div class="stat-value accent" id="mwTotal">0</div></div>
-          <div class="stat-card"><div class="stat-label">No Absences</div><div class="stat-value gold" id="mwPerfect">0</div></div>
+          <div class="stat-card"><div class="stat-label">Zero Absences</div><div class="stat-value gold" id="mwPerfect">0</div></div>
         </div>
-
         <div class="perfect-card">
-          <div class="card-label">⭐ Never Marked Absent This Month</div>
+          <div class="card-label" style="color:var(--gold);">⭐ Never Absent This Month</div>
           <div id="mwPerfectList"></div>
         </div>
-
         <div id="mwAbsentCard" style="display:none;margin-top:10px;">
           <div class="card" style="border-color:rgba(255,71,87,0.2);">
             <div class="card-label" style="color:var(--absent);">✖ Had At Least One Absence</div>
             <div id="mwAbsentList"></div>
           </div>
         </div>
-
         <div style="margin-top:12px;">
           <button class="btn btn-whatsapp" onclick="generateMonthlyWhatsApp()">📲 Share on WhatsApp</button>
         </div>
       </div>
-
       <div id="mwPlaceholder">
         <div class="card"><div class="placeholder"><span>⭐</span>Select dojo &amp; month, then tap Find</div></div>
       </div>
@@ -392,54 +496,83 @@
       <div class="field"><label>Year</label><select id="fYear"></select></div>
       <button class="btn btn-primary" onclick="loadFees()" style="margin-top:4px;">Load Fee Status</button>
     </div>
-
     <div class="stats-row" id="fStatsRow" style="display:none;">
       <div class="stat-card"><div class="stat-label">Total</div><div class="stat-value accent" id="fTotal">0</div></div>
       <div class="stat-card"><div class="stat-label">Paid</div><div class="stat-value green" id="fPaid">0</div></div>
       <div class="stat-card"><div class="stat-label">Unpaid</div><div class="stat-value red" id="fUnpaid">0</div></div>
       <div class="stat-card"><div class="stat-label">Collected</div><div class="stat-value gold" id="fPercent">—</div></div>
     </div>
-
     <div id="fTableCard" style="display:none;">
+      <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+        <button class="rpill active" id="frPill-all"    onclick="setFeeFilter('all',this)">All</button>
+        <button class="rpill green-pill" id="frPill-paid"   onclick="setFeeFilter('paid',this)">✔ Paid</button>
+        <button class="rpill red-pill"   id="frPill-unpaid" onclick="setFeeFilter('unpaid',this)">✖ Unpaid</button>
+      </div>
       <div style="display:flex;gap:8px;margin-bottom:10px;">
         <button class="btn btn-sm" style="background:rgba(0,230,118,0.12);color:var(--present);border:1px solid rgba(0,230,118,0.3);flex:1;" onclick="markAllFees('paid')">✔ Mark All Paid</button>
         <button class="btn btn-sm" style="background:rgba(255,71,87,0.12);color:var(--absent);border:1px solid rgba(255,71,87,0.3);flex:1;"  onclick="markAllFees('unpaid')">✖ Mark All Unpaid</button>
       </div>
       <div id="fBatchGroups"></div>
-
-      <div class="fee-report-card" id="fReportSection" style="display:none;">
-        <div class="card-label">Fee Report</div>
-        <div style="margin-bottom:10px;">
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <button class="rpill active" id="frPill-all"    onclick="setFeeFilter('all',this)">All</button>
-            <button class="rpill"        id="frPill-paid"   onclick="setFeeFilter('paid',this)" data-f="present">✔ Paid</button>
-            <button class="rpill"        id="frPill-unpaid" onclick="setFeeFilter('unpaid',this)" data-f="absent">✖ Unpaid</button>
-          </div>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>#</th><th>Student</th><th>Batch</th><th>Status</th></tr></thead>
-            <tbody id="fReportTable"></tbody>
-          </table>
-        </div>
-        <div class="action-bar">
-          <div class="summary" id="fReportSummary"></div>
-          <button class="btn btn-whatsapp" onclick="generateFeeWhatsApp()">📲 Share Fee Report on WhatsApp</button>
-        </div>
+      <div style="margin-top:10px;">
+        <button class="btn btn-whatsapp" onclick="generateFeeWhatsApp()">📲 Share Fee Report</button>
       </div>
     </div>
-
     <div id="fPlaceholder">
       <div class="card"><div class="placeholder"><span>💰</span>Select dojo and month to view fees</div></div>
     </div>
   </div>
 
-  <!-- ══ SETTINGS ══ -->
-  <div class="page" id="page-settings">
-    <div class="card"><div class="placeholder"><span>⚙️</span>Settings coming soon</div></div>
+  <!-- ══ BELT TEST ══ -->
+  <div class="page" id="page-belt-test">
+    <div class="card">
+      <div class="card-label">Belt Test Setup</div>
+      <p style="font-size:11px;color:var(--muted);margin-bottom:12px;font-weight:700;">
+        All students are eligible by default. <b style="color:var(--absent);">Tap a student to mark them ineligible</b> — they will stay at their current belt. Everyone else gets promoted.
+      </p>
+      <div class="field"><label>Dojo</label><select id="btDojo"></select></div>
+      <div class="field"><label>Batch (optional)</label><select id="btBatch"><option value="">All Batches</option></select></div>
+      <button class="btn btn-primary" onclick="loadBeltTest()" style="margin-top:4px;">Load Students</button>
+    </div>
+
+    <div id="btContent" style="display:none;">
+      <!-- Dedication leaderboard -->
+      <div class="dedication-card" id="btDedicationCard">
+        <div class="card-label" style="color:var(--gold);margin-bottom:10px;">🏆 Most Dedicated — Fewest Absences</div>
+        <p style="font-size:11px;color:var(--muted);font-weight:700;margin-bottom:10px;">Ranked by fewest absences since records began.</p>
+        <div id="btDedicationList"></div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-label">Total</div><div class="stat-value accent" id="btTotal">0</div></div>
+        <div class="stat-card"><div class="stat-label">Ineligible</div><div class="stat-value red" id="btIneligible">0</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-label">Select Ineligible Students</div>
+        <div id="btList"></div>
+      </div>
+
+      <div style="display:flex;gap:8px;margin-bottom:12px;">
+        <button class="btn btn-ghost btn-sm" onclick="btSelectNone()">Clear All</button>
+        <button class="btn btn-danger  btn-sm" onclick="btSelectAll()">Mark All Ineligible</button>
+      </div>
+
+      <button class="btn btn-success" onclick="confirmBeltTest()">🥋 Promote Eligible Students</button>
+    </div>
+
+    <div id="btPlaceholder">
+      <div class="card"><div class="placeholder"><span>🥋</span>Select dojo and load students to begin belt test</div></div>
+    </div>
+
+    <div id="btResults" style="display:none;margin-top:12px;">
+      <div class="card">
+        <div class="card-label" style="color:var(--present);">✅ Promotion Complete</div>
+        <div id="btResultList"></div>
+      </div>
+    </div>
   </div>
 
-</div>
+</div><!-- /scroll-area -->
 
 <!-- BOTTOM NAV -->
 <div class="bottom-nav">
@@ -447,10 +580,10 @@
   <button class="nav-btn"        onclick="switchPage('students',this)"><span class="ni">👤</span><span class="nl">Students</span></button>
   <button class="nav-btn"        onclick="switchPage('reports',this)"><span class="ni">📊</span><span class="nl">Reports</span></button>
   <button class="nav-btn"        onclick="switchPage('fees',this)"><span class="ni">💰</span><span class="nl">Fees</span></button>
-  <button class="nav-btn"        onclick="switchPage('settings',this)"><span class="ni">⚙️</span><span class="nl">Settings</span></button>
+  <button class="nav-btn"        onclick="switchPage('belt-test',this)"><span class="ni">🥋</span><span class="nl">Belt Test</span></button>
 </div>
 
-<!-- ADD/EDIT STUDENT MODAL -->
+<!-- ADD / EDIT STUDENT MODAL -->
 <div class="modal-overlay" id="studentModal">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -459,6 +592,7 @@
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <div class="field"><label>Full Name</label><input type="text" id="mName" placeholder="e.g. Arjun Kumar"/></div>
+    <div class="field"><label>Parent Phone Number</label><input type="tel" id="mPhone" placeholder="e.g. +919876543210"/></div>
     <div class="field"><label>Dojo</label><select id="mDojo" onchange="loadModalBatches()"></select></div>
     <div class="field"><label>Batch</label><select id="mBatch"></select></div>
     <div class="field">
@@ -477,12 +611,25 @@
   </div>
 </div>
 
+<!-- CONFIRM BELT TEST MODAL -->
+<div class="modal-overlay" id="btConfirmModal">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header"><h3>Confirm Promotion</h3><button class="modal-close" onclick="closeBtModal()">✕</button></div>
+    <div id="btConfirmText" style="font-size:13px;color:var(--muted);font-weight:700;line-height:1.7;"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeBtModal()">Cancel</button>
+      <button class="btn btn-success" id="btDoPromote" onclick="executeBeltTest()">✅ Confirm &amp; Promote</button>
+    </div>
+  </div>
+</div>
+
 <!-- WHATSAPP MODAL -->
 <div class="modal-overlay" id="waModal">
   <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-header">
-      <h3>📲 WhatsApp Report</h3>
+      <h3>📲 WhatsApp</h3>
       <button class="modal-close" onclick="closeWaModal()">✕</button>
     </div>
     <p style="font-size:12px;color:var(--muted);">Copy and paste into your WhatsApp group:</p>
@@ -497,780 +644,1161 @@
 <div id="toast"></div>
 
 <script>
-  const API = '';
-  const attendance = {};
-  let allStudents   = [];
-  let editingId     = null;
-  let feeData       = [];
-  let fMonth_cur    = 1;
-  let fYear_cur     = 2024;
-  let mwNoAbsenceData = [];
-  let mwHadAbsenceData = [];
-  let mwTotalCount  = 0;
-  let cachedDojos   = [];
-  let currentFeeFilter = 'all';
+const API = '';
+const attendance  = {};
+let allStudents   = [];
+let editingId     = null;
+let feeData       = [];
+let fMonth_cur    = 1;
+let fYear_cur     = new Date().getFullYear();
+let mwNoAbsData   = [];
+let mwHadAbsData  = [];
+let mwTotalCount  = 0;
+let cachedDojos   = [];
+let currentFeeFilter = 'all';
+let btStudents    = [];
+let btIneligibleIds = new Set();
+let currentPage   = 'attendance';
+let profileHistory = []; // navigation stack
 
-  const MONTH_NAMES = ['','January','February','March','April','May','June',
-                       'July','August','September','October','November','December'];
+const BELT_ORDER = ['White','Yellow','Orange','Green','Blue','Purple 1','Purple 2','Brown 1','Brown 2','Black'];
+const MONTH_NAMES = ['','January','February','March','April','May','June',
+                     'July','August','September','October','November','December'];
 
-  // ── Init ──────────────────────────────────────────────
-  (function init() {
-    const now = new Date();
-    [document.getElementById('fYear'), document.getElementById('mwYear')].forEach(sel => {
-      for (let y = now.getFullYear(); y >= now.getFullYear() - 3; y--)
-        sel.innerHTML += `<option value="${y}">${y}</option>`;
-    });
-    document.getElementById('fMonth').value  = now.getMonth() + 1;
-    document.getElementById('mwMonth').value = now.getMonth() + 1;
-    document.getElementById('dateInput').valueAsDate = new Date();
-    document.getElementById('rDate').valueAsDate     = new Date();
-    loadDojos();
-  })();
+// ── Init ───────────────────────────────────────────────
+(function init() {
+  const now = new Date();
+  ['fYear','mwYear'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    for (let y = now.getFullYear(); y >= now.getFullYear() - 3; y--)
+      el.innerHTML += `<option value="${y}">${y}</option>`;
+  });
+  document.getElementById('fMonth').value  = now.getMonth() + 1;
+  document.getElementById('mwMonth').value = now.getMonth() + 1;
+  document.getElementById('dateInput').valueAsDate = new Date();
+  document.getElementById('rDate').valueAsDate     = new Date();
+  loadDojos();
+})();
 
-  // ── Page switch ────────────────────────────────────────
-  const pageTitles = { attendance:'Attendance', students:'Students', reports:'Reports', fees:'Fees', settings:'Settings' };
+// ── Page switch ─────────────────────────────────────────
+const pageTitles = { attendance:'Attendance', students:'Students', reports:'Reports',
+                     fees:'Fees', 'belt-test':'Belt Test' };
 
-  function switchPage(name, el) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('page-' + name).classList.add('active');
-    el.classList.add('active');
-    document.getElementById('topPageLabel').textContent = pageTitles[name] || name;
-    document.querySelector('.scroll-area').scrollTop = 0;
-    if (name === 'students') initStudentsPage();
-    if (name === 'fees')     initFeesPage();
-    if (name === 'reports')  initReportsPage();
-  }
+function switchPage(name, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  el.classList.add('active');
+  currentPage = name;
+  document.getElementById('topPageLabel').textContent = pageTitles[name] || name;
+  document.getElementById('scrollArea').scrollTop = 0;
+  profileHistory = [];
+  document.getElementById('backBtn').classList.remove('visible');
+  if (name === 'students')   { showStudentsList(); initStudentsPage(); }
+  if (name === 'fees')       initFeesPage();
+  if (name === 'reports')    initReportsPage();
+  if (name === 'belt-test')  initBeltTestPage();
+}
 
-  function switchReportTab(tab) {
-    document.getElementById('r-daily').style.display   = tab === 'daily'   ? '' : 'none';
-    document.getElementById('r-monthly').style.display = tab === 'monthly' ? '' : 'none';
-    document.getElementById('rtab-daily').classList.toggle('active',   tab === 'daily');
-    document.getElementById('rtab-monthly').classList.toggle('active', tab === 'monthly');
-  }
-
-  // ── Helpers ────────────────────────────────────────────
-  async function apiFetch(path, opts = {}) {
-    const r = await fetch(API + path, opts);
-    if (!r.ok) { const e = await r.json().catch(() => ({})); throw new Error(e.error || `HTTP ${r.status}`); }
-    return r.json();
-  }
-
-  function toast(msg, type = 'success') {
-    const t = document.getElementById('toast');
-    t.textContent = msg; t.className = `show ${type}`;
-    clearTimeout(t._timer);
-    t._timer = setTimeout(() => { t.className = ''; }, 3000);
-  }
-
-  function esc(s) {
-    return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
-
-  function beltClass(belt) {
-    const b = (belt || '').toLowerCase().split(' ')[0];
-    return { white:'belt-white', yellow:'belt-yellow', orange:'belt-orange', green:'belt-green',
-             blue:'belt-blue', purple:'belt-purple', brown:'belt-brown', black:'belt-black' }[b] || 'belt-white';
-  }
-
-  function populateDojo(id, placeholder) {
-    const sel = document.getElementById(id);
-    sel.innerHTML = placeholder ? `<option value="">${placeholder}</option>` : '';
-    cachedDojos.forEach(d => sel.innerHTML += `<option value="${d.id}">${esc(d.name)}</option>`);
-  }
-
-  // ══ DOJOS ═════════════════════════════════════════════
-  async function loadDojos() {
-    try {
-      cachedDojos = await apiFetch('/api/dojos');
-      ['dojoSelect','sDojo','rDojo','mwDojo','fDojo'].forEach(id => populateDojo(id, '— Select Dojo —'));
-      populateDojo('mDojo', null);
-      document.getElementById('dojoSelect').onchange = onDojoChange;
-      document.getElementById('sDojo').onchange      = onSDojoChange;
-      document.getElementById('rDojo').onchange      = onRDojoChange;
-      document.getElementById('mwDojo').onchange     = onMwDojoChange;
-      document.getElementById('fDojo').onchange      = onFDojoChange;
-      if (cachedDojos.length) loadModalBatches();
-    } catch (e) { toast('Could not connect to server', 'error'); }
-  }
-
-  // ══ ATTENDANCE ════════════════════════════════════════
-  async function onDojoChange() {
-    const dojoId   = document.getElementById('dojoSelect').value;
-    const batchSel = document.getElementById('batchSelect');
-    const loadBtn  = document.getElementById('loadBtn');
-    batchSel.innerHTML = '<option value="">— Select Batch —</option>';
-    batchSel.disabled = true; loadBtn.disabled = true;
-    if (!dojoId) return;
-    try {
-      const batches = await apiFetch('/api/batches?dojo_id=' + dojoId);
-      batches.forEach(b => batchSel.innerHTML += `<option value="${b.id}">${esc(b.name)}</option>`);
-      batchSel.disabled = false;
-      batchSel.onchange = () => { loadBtn.disabled = !batchSel.value; };
-    } catch (e) { toast('Failed to load batches', 'error'); }
-  }
-
-  async function loadAttStudents() {
-    const batchId = document.getElementById('batchSelect').value;
-    if (!batchId) return;
-    const tbody = document.getElementById('attTable');
-    tbody.innerHTML = `<tr><td colspan="4"><div class="placeholder"><span class="spinner"></span>Loading…</div></td></tr>`;
-    document.getElementById('attActionBar').style.display = 'none';
-    Object.keys(attendance).forEach(k => delete attendance[k]);
-    try {
-      const students = await apiFetch('/api/students?batch_id=' + batchId);
-      if (!students.length) { tbody.innerHTML = `<tr><td colspan="4"><div class="placeholder"><span>👥</span>No students in this batch</div></td></tr>`; return; }
-      tbody.innerHTML = '';
-      students.forEach((s, i) => {
-        attendance[s.id] = null;
-        const tr = document.createElement('tr');
-        tr.id = `row-${s.id}`;
-        tr.innerHTML = `
-          <td class="num-cell">${String(i+1).padStart(2,'0')}</td>
-          <td>
-            <div class="s-name">${esc(s.name)}</div>
-            <div style="margin-top:3px;"><span class="belt-badge ${beltClass(s.belt_level)}">${esc(s.belt_level)}</span></div>
-          </td>
-          <td>
-            <div class="att-btns">
-              <button class="att-btn btn-present" onclick="mark(${s.id},'present',this)">✔</button>
-              <button class="att-btn btn-absent"  onclick="mark(${s.id},'absent',this)">✖</button>
-            </div>
-          </td>
-          <td><span id="status-${s.id}" class="status-pill status-pending">—</span></td>`;
-        tbody.appendChild(tr);
-      });
-      document.getElementById('attActionBar').style.display = 'block';
-      updateSummary(students.length);
-    } catch (e) {
-      tbody.innerHTML = `<tr><td colspan="4"><div class="placeholder"><span>⚠️</span>Failed to load</div></td></tr>`;
-      toast('Error loading students', 'error');
+function goBack() {
+  if (profileHistory.length > 0) {
+    profileHistory.pop();
+    if (profileHistory.length === 0) {
+      showStudentsList();
     }
   }
+}
 
-  function mark(id, status, btn) {
-    attendance[id] = status;
-    document.getElementById(`row-${id}`).querySelectorAll('.btn-present,.btn-absent').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const pill = document.getElementById(`status-${id}`);
-    pill.className = `status-pill status-${status}`;
-    pill.textContent = status === 'present' ? 'Present' : 'Absent';
-    updateSummary(Object.keys(attendance).length);
-  }
+function showStudentsList() {
+  document.getElementById('students-list-view').style.display = '';
+  document.getElementById('student-profile-view').style.display = 'none';
+  document.getElementById('topPageLabel').textContent = 'Students';
+  document.getElementById('backBtn').classList.remove('visible');
+  document.getElementById('scrollArea').scrollTop = 0;
+}
 
-  function updateSummary(total) {
-    const vals = Object.values(attendance);
-    document.getElementById('summaryTotal').textContent   = total;
-    document.getElementById('summaryPresent').textContent = vals.filter(v => v === 'present').length;
-    document.getElementById('summaryAbsent').textContent  = vals.filter(v => v === 'absent').length;
-  }
+function switchReportTab(tab) {
+  document.getElementById('r-daily').style.display   = tab === 'daily'   ? '' : 'none';
+  document.getElementById('r-monthly').style.display = tab === 'monthly' ? '' : 'none';
+  document.getElementById('rtab-daily').classList.toggle('active',   tab === 'daily');
+  document.getElementById('rtab-monthly').classList.toggle('active', tab === 'monthly');
+}
 
-  async function submitAll() {
-    const date = document.getElementById('dateInput').value;
-    if (!date) { toast('Please select a date', 'error'); return; }
-    const records = Object.entries(attendance).filter(([,s]) => s !== null)
-      .map(([id, status]) => ({ student_id: Number(id), status, date }));
-    if (!records.length) { toast('No attendance marked yet', 'error'); return; }
-    const btn = document.getElementById('submitBtn');
-    btn.disabled = true; btn.textContent = 'Saving…';
-    try {
-      await apiFetch('/api/attendance', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ records }) });
-      toast(`✔ Saved ${records.length} records`, 'success');
-    } catch (e) { toast('Failed to save attendance', 'error'); }
-    finally { btn.disabled = false; btn.textContent = '💾 Save Attendance'; }
-  }
+// ── Helpers ─────────────────────────────────────────────
+async function apiFetch(path, opts = {}) {
+  const r = await fetch(API + path, opts);
+  if (!r.ok) { const e = await r.json().catch(() => ({})); throw new Error(e.error || `HTTP ${r.status}`); }
+  return r.json();
+}
 
-  // ══ STUDENTS ══════════════════════════════════════════
-  async function initStudentsPage() {
-    populateDojo('sDojo', '— Select Dojo —');
-    document.getElementById('sDojo').onchange = onSDojoChange;
-    await loadStats();
-  }
+function toast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = `show ${type}`;
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => { t.className = ''; }, 3000);
+}
 
-  async function loadStats() {
-    try {
-      const data = await apiFetch('/api/students/stats');
-      document.getElementById('statTotal').textContent = data.total ?? '—';
-      document.getElementById('statBlack').textContent = data.black ?? '—';
-    } catch (_) {}
-  }
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 
-  async function onSDojoChange() {
-    const dojoId = document.getElementById('sDojo').value;
-    const sBatch = document.getElementById('sBatch');
-    sBatch.innerHTML = '<option value="">All Batches</option>';
-    if (dojoId) {
-      try {
-        const batches = await apiFetch('/api/batches?dojo_id=' + dojoId);
-        batches.forEach(b => sBatch.innerHTML += `<option value="${b.id}">${esc(b.name)}</option>`);
-      } catch (_) {}
-    }
-    await fetchAllStudents();
-  }
+function beltClass(belt) {
+  const b = (belt || '').toLowerCase().split(' ')[0];
+  return { white:'belt-white', yellow:'belt-yellow', orange:'belt-orange', green:'belt-green',
+           blue:'belt-blue', purple:'belt-purple', brown:'belt-brown', black:'belt-black' }[b] || 'belt-white';
+}
 
-  async function fetchAllStudents() {
-    const dojoId = document.getElementById('sDojo').value;
-    if (!dojoId) {
-      allStudents = [];
-      document.getElementById('sTable').innerHTML = `<tr><td colspan="3"><div class="placeholder"><span>👤</span>Select a dojo</div></td></tr>`;
-      document.getElementById('studentCount').textContent = '';
-      return;
-    }
-    document.getElementById('sTable').innerHTML = `<tr><td colspan="3"><div class="placeholder"><span class="spinner"></span>Loading…</div></td></tr>`;
-    try {
-      allStudents = await apiFetch('/api/students?dojo_id=' + dojoId);
-      filterStudents();
-    } catch (e) {
-      document.getElementById('sTable').innerHTML = `<tr><td colspan="3"><div class="placeholder"><span>⚠️</span>Failed to load</div></td></tr>`;
-      toast('Error loading students', 'error');
-    }
-  }
+function nextBeltLabel(belt) {
+  const clean = (belt||'').replace(/ belt$/i,'').trim();
+  const idx = BELT_ORDER.findIndex(b => b.toLowerCase() === clean.toLowerCase());
+  if (idx === -1 || idx === BELT_ORDER.length - 1) return belt;
+  return BELT_ORDER[idx + 1];
+}
 
-  function filterStudents() {
-    const batchId = document.getElementById('sBatch').value;
-    const belt    = document.getElementById('sBelt').value.toLowerCase();
-    const search  = document.getElementById('sSearch').value.toLowerCase().trim();
-    const filtered = allStudents.filter(s =>
-      (!batchId || String(s.batch_id) === batchId) &&
-      (!belt    || (s.belt_level || '').toLowerCase() === belt) &&
-      (!search  || s.name.toLowerCase().includes(search))
-    );
-    document.getElementById('studentCount').textContent = `${filtered.length} student${filtered.length !== 1 ? 's' : ''}`;
-    const tbody = document.getElementById('sTable');
-    if (!filtered.length) { tbody.innerHTML = `<tr><td colspan="3"><div class="placeholder"><span>🔍</span>No matches</div></td></tr>`; return; }
+function populateDojo(id, placeholder) {
+  const sel = document.getElementById(id);
+  if (!sel) return;
+  sel.innerHTML = placeholder ? `<option value="">${placeholder}</option>` : '';
+  cachedDojos.forEach(d => sel.innerHTML += `<option value="${d.id}">${esc(d.name)}</option>`);
+}
+
+// ══ DOJOS ══════════════════════════════════════════════
+async function loadDojos() {
+  try {
+    cachedDojos = await apiFetch('/api/dojos');
+    ['dojoSelect','sDojo','rDojo','fDojo','btDojo'].forEach(id => populateDojo(id, '— Select Dojo —'));
+    populateDojo('mDojo', null);
+
+    const mwSel = document.getElementById('mwDojo');
+    mwSel.innerHTML = '<option value="all">🌐 All Dojos</option>';
+    cachedDojos.forEach(d => mwSel.innerHTML += `<option value="${d.id}">${esc(d.name)}</option>`);
+    mwSel.onchange = onMwDojoChange;
+
+    document.getElementById('dojoSelect').onchange = onDojoChange;
+    document.getElementById('sDojo').onchange      = onSDojoChange;
+    document.getElementById('rDojo').onchange      = onRDojoChange;
+    document.getElementById('fDojo').onchange      = onFDojoChange;
+    document.getElementById('btDojo').onchange     = onBtDojoChange;
+    if (cachedDojos.length) loadModalBatches();
+  } catch (e) { toast('Could not connect to server', 'error'); }
+}
+
+// ══ ATTENDANCE ══════════════════════════════════════════
+async function onDojoChange() {
+  const dojoId   = document.getElementById('dojoSelect').value;
+  const batchSel = document.getElementById('batchSelect');
+  const loadBtn  = document.getElementById('loadBtn');
+  batchSel.innerHTML = '<option value="">— Select Batch —</option>';
+  batchSel.disabled = true; loadBtn.disabled = true;
+  if (!dojoId) return;
+  try {
+    const batches = await apiFetch('/api/batches?dojo_id=' + dojoId);
+    batches.forEach(b => batchSel.innerHTML += `<option value="${b.id}">${esc(b.name)}</option>`);
+    batchSel.disabled = false;
+    batchSel.onchange = () => { loadBtn.disabled = !batchSel.value; };
+  } catch (e) { toast('Failed to load batches', 'error'); }
+}
+
+async function loadAttStudents() {
+  const batchId = document.getElementById('batchSelect').value;
+  if (!batchId) return;
+  const tbody = document.getElementById('attTable');
+  tbody.innerHTML = `<tr><td colspan="4"><div class="placeholder"><span class="spinner"></span>Loading…</div></td></tr>`;
+  document.getElementById('attActionBar').style.display = 'none';
+  Object.keys(attendance).forEach(k => delete attendance[k]);
+  try {
+    const students = await apiFetch('/api/students?batch_id=' + batchId);
+    if (!students.length) { tbody.innerHTML = `<tr><td colspan="4"><div class="placeholder"><span>👥</span>No students in this batch</div></td></tr>`; return; }
     tbody.innerHTML = '';
-    filtered.forEach((s, i) => {
+    students.forEach((s, i) => {
+      attendance[s.id] = null;
       const tr = document.createElement('tr');
+      tr.id = `row-${s.id}`;
       tr.innerHTML = `
         <td class="num-cell">${String(i+1).padStart(2,'0')}</td>
         <td>
           <div class="s-name">${esc(s.name)}</div>
-          <div style="margin-top:3px;">
-            <span class="belt-badge ${beltClass(s.belt_level)}">${esc(s.belt_level)}</span>
-            <span style="font-size:11px;color:var(--muted);margin-left:5px;">${esc(s.batch_name||'')}</span>
-          </div>
+          <div style="margin-top:3px;"><span class="belt-badge ${beltClass(s.belt_level)}">${esc(s.belt_level)}</span></div>
         </td>
-        <td>
-          <div style="display:flex;flex-direction:column;gap:5px;">
-            <button class="btn btn-ghost btn-sm" onclick="openEditModal(${s.id})">✏️</button>
-            <button class="btn btn-danger btn-sm" onclick="deleteStudent(${s.id},'${esc(s.name)}')">🗑</button>
-          </div>
-        </td>`;
+        <td><div class="att-btns">
+          <button class="att-btn btn-present" onclick="mark(${s.id},'present',this)">✔</button>
+          <button class="att-btn btn-absent"  onclick="mark(${s.id},'absent',this)">✖</button>
+        </div></td>
+        <td><span id="status-${s.id}" class="status-pill status-pending">—</span></td>`;
       tbody.appendChild(tr);
     });
+    document.getElementById('attActionBar').style.display = 'block';
+    updateSummary(students.length);
+  } catch (e) {
+    tbody.innerHTML = `<tr><td colspan="4"><div class="placeholder"><span>⚠️</span>Failed to load</div></td></tr>`;
+    toast('Error loading students', 'error');
   }
+}
 
-  // ── Modal ──────────────────────────────────────────────
-  async function loadModalBatches() {
-    const dojoId = document.getElementById('mDojo').value;
-    const mBatch = document.getElementById('mBatch');
-    mBatch.innerHTML = '<option value="">Loading…</option>';
-    if (!dojoId) return;
+function mark(id, status, btn) {
+  attendance[id] = status;
+  document.getElementById(`row-${id}`).querySelectorAll('.btn-present,.btn-absent').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const pill = document.getElementById(`status-${id}`);
+  pill.className = `status-pill status-${status}`;
+  pill.textContent = status === 'present' ? 'Present' : 'Absent';
+  updateSummary(Object.keys(attendance).length);
+}
+
+function updateSummary(total) {
+  const vals = Object.values(attendance);
+  document.getElementById('summaryTotal').textContent   = total;
+  document.getElementById('summaryPresent').textContent = vals.filter(v => v === 'present').length;
+  document.getElementById('summaryAbsent').textContent  = vals.filter(v => v === 'absent').length;
+}
+
+async function submitAll() {
+  const date = document.getElementById('dateInput').value;
+  if (!date) { toast('Please select a date', 'error'); return; }
+  const records = Object.entries(attendance).filter(([,s]) => s !== null)
+    .map(([id, status]) => ({ student_id: Number(id), status, date }));
+  if (!records.length) { toast('No attendance marked yet', 'error'); return; }
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  try {
+    await apiFetch('/api/attendance', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ records }) });
+    toast(`✔ Saved ${records.length} records`, 'success');
+  } catch (e) { toast('Failed to save', 'error'); }
+  finally { btn.disabled = false; btn.textContent = '💾 Save Attendance'; }
+}
+
+// ══ STUDENTS ════════════════════════════════════════════
+async function initStudentsPage() {
+  populateDojo('sDojo', '— Select Dojo —');
+  document.getElementById('sDojo').onchange = onSDojoChange;
+  populateDojo('mDojo', null);
+  await loadStats();
+}
+
+async function loadStats() {
+  try {
+    const data = await apiFetch('/api/students/stats');
+    document.getElementById('statTotal').textContent = data.total ?? '—';
+    document.getElementById('statBlack').textContent = data.black ?? '—';
+  } catch (_) {}
+}
+
+async function onSDojoChange() {
+  const dojoId = document.getElementById('sDojo').value;
+  const sBatch = document.getElementById('sBatch');
+  sBatch.innerHTML = '<option value="">All Batches</option>';
+  if (dojoId) {
     try {
       const batches = await apiFetch('/api/batches?dojo_id=' + dojoId);
-      mBatch.innerHTML = batches.length
-        ? batches.map(b => `<option value="${b.id}">${esc(b.name)}</option>`).join('')
-        : '<option value="">No batches</option>';
-    } catch (_) { mBatch.innerHTML = '<option>Error</option>'; }
+      batches.forEach(b => sBatch.innerHTML += `<option value="${b.id}">${esc(b.name)}</option>`);
+    } catch (_) {}
   }
+  await fetchAllStudents();
+}
 
-  function openAddModal() {
-    editingId = null;
-    document.getElementById('modalTitle').textContent   = 'Add Student';
-    document.getElementById('modalSaveBtn').textContent = 'Save';
-    document.getElementById('mName').value = '';
-    document.getElementById('mBelt').value = 'White';
-    populateDojo('mDojo', null);
-    const dojoId = document.getElementById('sDojo').value;
-    if (dojoId) document.getElementById('mDojo').value = dojoId;
-    loadModalBatches();
-    document.getElementById('studentModal').classList.add('open');
+async function fetchAllStudents() {
+  const dojoId = document.getElementById('sDojo').value;
+  if (!dojoId) {
+    allStudents = [];
+    document.getElementById('sTable').innerHTML = `<tr><td colspan="3"><div class="placeholder"><span>👤</span>Select a dojo</div></td></tr>`;
+    document.getElementById('studentCount').textContent = '';
+    return;
   }
-
-  async function openEditModal(id) {
-    editingId = id;
-    const s = allStudents.find(x => x.id === id);
-    if (!s) return;
-    document.getElementById('modalTitle').textContent   = 'Edit Student';
-    document.getElementById('modalSaveBtn').textContent = 'Update';
-    document.getElementById('mName').value = s.name;
-    document.getElementById('mBelt').value = s.belt_level;
-    populateDojo('mDojo', null);
-    document.getElementById('mDojo').value = s.dojo_id || document.getElementById('sDojo').value;
-    await loadModalBatches();
-    document.getElementById('mBatch').value = s.batch_id;
-    document.getElementById('studentModal').classList.add('open');
+  document.getElementById('sTable').innerHTML = `<tr><td colspan="3"><div class="placeholder"><span class="spinner"></span>Loading…</div></td></tr>`;
+  try {
+    allStudents = await apiFetch('/api/students?dojo_id=' + dojoId);
+    filterStudents();
+  } catch (e) {
+    document.getElementById('sTable').innerHTML = `<tr><td colspan="3"><div class="placeholder"><span>⚠️</span>Failed</div></td></tr>`;
+    toast('Error loading students', 'error');
   }
+}
 
-  function closeModal() { document.getElementById('studentModal').classList.remove('open'); }
+function filterStudents() {
+  const batchId = document.getElementById('sBatch').value;
+  const belt    = document.getElementById('sBelt').value.toLowerCase();
+  const search  = document.getElementById('sSearch').value.toLowerCase().trim();
+  const filtered = allStudents.filter(s =>
+    (!batchId || String(s.batch_id) === batchId) &&
+    (!belt    || (s.belt_level || '').toLowerCase() === belt) &&
+    (!search  || s.name.toLowerCase().includes(search))
+  );
+  document.getElementById('studentCount').textContent = `${filtered.length} student${filtered.length !== 1 ? 's' : ''}`;
+  const tbody = document.getElementById('sTable');
+  if (!filtered.length) { tbody.innerHTML = `<tr><td colspan="3"><div class="placeholder"><span>🔍</span>No matches</div></td></tr>`; return; }
+  tbody.innerHTML = '';
+  filtered.forEach((s, i) => {
+    const tr = document.createElement('tr');
+    tr.className = 's-row-clickable';
+    tr.innerHTML = `
+      <td class="num-cell">${String(i+1).padStart(2,'0')}</td>
+      <td onclick="openStudentProfile(${s.id})">
+        <div class="s-name">${esc(s.name)}</div>
+        <div style="margin-top:3px;">
+          <span class="belt-badge ${beltClass(s.belt_level)}">${esc(s.belt_level)}</span>
+          <span style="font-size:11px;color:var(--muted);margin-left:5px;">${esc(s.batch_name||'')}</span>
+        </div>
+        ${s.phone_number ? `<div style="font-size:11px;color:var(--muted);margin-top:2px;">📞 ${esc(s.phone_number)}</div>` : ''}
+      </td>
+      <td>
+        <div style="display:flex;flex-direction:column;gap:5px;">
+          <button class="btn btn-ghost btn-sm" onclick="openEditModal(${s.id});event.stopPropagation()">✏️</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteStudent(${s.id},'${esc(s.name)}');event.stopPropagation()">🗑</button>
+        </div>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+}
 
-  async function saveStudent() {
-    const name    = document.getElementById('mName').value.trim();
-    const batchId = document.getElementById('mBatch').value;
-    const belt    = document.getElementById('mBelt').value;
-    if (!name)    { toast('Enter a name', 'error'); return; }
-    if (!batchId) { toast('Select a batch', 'error'); return; }
-    const btn = document.getElementById('modalSaveBtn');
-    btn.disabled = true; btn.textContent = 'Saving…';
+// ══ STUDENT PROFILE ═════════════════════════════════════
+async function openStudentProfile(id) {
+  profileHistory.push(id);
+  document.getElementById('students-list-view').style.display = 'none';
+  document.getElementById('student-profile-view').style.display = 'block';
+  document.getElementById('student-profile-view').innerHTML = `<div class="placeholder"><span class="spinner"></span>Loading profile…</div>`;
+  document.getElementById('backBtn').classList.add('visible');
+  document.getElementById('topPageLabel').textContent = 'Profile';
+  document.getElementById('scrollArea').scrollTop = 0;
+
+  try {
+    const data = await apiFetch(`/api/students/${id}/profile`);
+    renderStudentProfile(data);
+  } catch (e) {
+    document.getElementById('student-profile-view').innerHTML = `<div class="placeholder"><span>⚠️</span>Failed to load profile</div>`;
+    toast('Error loading profile', 'error');
+  }
+}
+
+function renderStudentProfile(data) {
+  const { student, attendance: att, fees } = data;
+  const stats = att.stats;
+  const pct = stats.percentage;
+  const circColor = pct >= 80 ? 'green' : pct >= 60 ? 'green' : 'red';
+
+  // Circular progress ring
+  const r = 30, circ = 2 * Math.PI * r;
+  const offset = circ - (pct / 100) * circ;
+
+  // Group attendance records by month
+  const byMonth = {};
+  att.records.forEach(rec => {
+    const d = new Date(rec.date);
+    const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+    if (!byMonth[key]) byMonth[key] = [];
+    byMonth[key].push(rec);
+  });
+
+  const monthDotsHtml = Object.entries(byMonth).slice(0,6).map(([key, recs]) => {
+    const [yr, mo] = key.split('-');
+    const dots = recs.map(r => {
+      const d = new Date(r.date);
+      return `<div class="att-dot ${r.status}" title="${r.date}">${d.getDate()}</div>`;
+    }).join('');
+    return `<div class="att-month-block">
+      <div class="att-month-label">${MONTH_NAMES[parseInt(mo)]} ${yr}</div>
+      <div class="att-dots">${dots}</div>
+    </div>`;
+  }).join('');
+
+  // Fee history rows
+  const feeRowsHtml = fees.length ? fees.map(f => {
+    const isPaid = f.status === 'paid';
+    return `<div class="fee-month-row">
+      <div>
+        <div class="fee-month-name">${MONTH_NAMES[f.month]}</div>
+        <div class="fee-month-year">${f.year}</div>
+      </div>
+      <span class="status-pill ${isPaid ? 'status-present' : 'status-absent'}">${isPaid ? '✔ Paid' : '✖ Unpaid'}</span>
+    </div>`;
+  }).join('') : `<div style="text-align:center;padding:16px;color:var(--muted);font-size:13px;font-weight:700;">No fee records yet</div>`;
+
+  // Monthly attendance mini summary
+  const monthlyHtml = att.monthly.length ? att.monthly.map(m => {
+    const mpct = m.total > 0 ? Math.round(m.present / m.total * 100) : 0;
+    const barColor = mpct >= 80 ? 'var(--present)' : mpct >= 50 ? 'var(--gold)' : 'var(--absent)';
+    return `<div style="margin-bottom:8px;">
+      <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:var(--muted);margin-bottom:4px;">
+        <span>${MONTH_NAMES[m.month]} ${m.year}</span>
+        <span style="color:${barColor}">${mpct}% · ${m.present}/${m.total}</span>
+      </div>
+      <div class="progress-track"><div style="height:100%;width:${mpct}%;background:${barColor};border-radius:20px;transition:width 0.6s;"></div></div>
+    </div>`;
+  }).join('') : `<div style="text-align:center;padding:16px;color:var(--muted);font-size:13px;font-weight:700;">No monthly data</div>`;
+
+  document.getElementById('student-profile-view').innerHTML = `
+    <!-- HERO -->
+    <div class="profile-hero">
+      <div style="display:flex;align-items:flex-start;gap:16px;">
+        <div>
+          <div class="profile-avatar">🥋</div>
+          <div class="profile-name">${esc(student.name)}</div>
+          <div class="profile-meta">
+            <span class="belt-badge ${beltClass(student.belt_level)}">${esc(student.belt_level)}</span>
+            <span style="font-size:11px;color:var(--muted);font-weight:700;">📌 ${esc(student.batch_name)}</span>
+          </div>
+          <div class="profile-meta" style="margin-top:6px;">
+            <span class="profile-phone">🏯 ${esc(student.dojo_name)}</span>
+          </div>
+          ${student.phone_number ? `<div class="profile-meta"><a href="tel:${esc(student.phone_number)}" style="color:var(--accent);font-size:13px;font-weight:800;text-decoration:none;">📞 ${esc(student.phone_number)}</a></div>` : ''}
+        </div>
+        <div style="margin-left:auto;flex-shrink:0;">
+          <div class="circ-prog">
+            <svg viewBox="0 0 80 80" width="80" height="80">
+              <circle class="track" cx="40" cy="40" r="${r}"/>
+              <circle class="fill ${circColor}" cx="40" cy="40" r="${r}"
+                stroke-dasharray="${circ}" stroke-dashoffset="${offset}"/>
+            </svg>
+            <div class="circ-label">
+              <div class="pct">${pct}%</div>
+              <div class="sub">ATTEND</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row cols3">
+      <div class="stat-card"><div class="stat-label">Classes</div><div class="stat-value accent" style="font-size:22px;">${stats.total}</div></div>
+      <div class="stat-card"><div class="stat-label">Present</div><div class="stat-value green" style="font-size:22px;">${stats.present}</div></div>
+      <div class="stat-card"><div class="stat-label">Absent</div><div class="stat-value red" style="font-size:22px;">${stats.absent}</div></div>
+    </div>
+
+    <!-- ACTIONS -->
+    <div style="display:flex;gap:8px;margin-bottom:12px;">
+      <button class="btn btn-ghost btn-sm" style="flex:1;" onclick="openEditModal(${student.id})">✏️ Edit</button>
+      <button class="btn btn-danger btn-sm" style="flex:1;" onclick="deleteStudent(${student.id},'${esc(student.name)}')">🗑 Delete</button>
+    </div>
+
+    <!-- MONTHLY ATTENDANCE -->
+    <div class="card">
+      <div class="card-label">Monthly Attendance</div>
+      ${monthlyHtml}
+    </div>
+
+    <!-- ATTENDANCE TIMELINE -->
+    <div class="card">
+      <div class="card-label">Attendance History</div>
+      ${att.records.length ? monthDotsHtml : '<div style="text-align:center;padding:16px;color:var(--muted);font-size:13px;font-weight:700;">No attendance records yet</div>'}
+    </div>
+
+    <!-- FEE HISTORY -->
+    <div class="card">
+      <div class="card-label">Fee History</div>
+      ${feeRowsHtml}
+    </div>
+  `;
+}
+
+// ── Modal ────────────────────────────────────────────────
+async function loadModalBatches() {
+  const dojoId = document.getElementById('mDojo').value;
+  const mBatch = document.getElementById('mBatch');
+  mBatch.innerHTML = '<option value="">Loading…</option>';
+  if (!dojoId) return;
+  try {
+    const batches = await apiFetch('/api/batches?dojo_id=' + dojoId);
+    mBatch.innerHTML = batches.length
+      ? batches.map(b => `<option value="${b.id}">${esc(b.name)}</option>`).join('')
+      : '<option value="">No batches</option>';
+  } catch (_) { mBatch.innerHTML = '<option>Error</option>'; }
+}
+
+function openAddModal() {
+  editingId = null;
+  document.getElementById('modalTitle').textContent   = 'Add Student';
+  document.getElementById('modalSaveBtn').textContent = 'Save';
+  document.getElementById('mName').value  = '';
+  document.getElementById('mPhone').value = '';
+  document.getElementById('mBelt').value  = 'White';
+  populateDojo('mDojo', null);
+  const dojoId = document.getElementById('sDojo').value;
+  if (dojoId) document.getElementById('mDojo').value = dojoId;
+  loadModalBatches();
+  document.getElementById('studentModal').classList.add('open');
+}
+
+async function openEditModal(id) {
+  editingId = id;
+  const s = allStudents.find(x => x.id === id) ||
+    (document.getElementById('student-profile-view').style.display !== 'none' ? { id } : null);
+
+  // If we're on the profile view, we need to fetch student data
+  let student = allStudents.find(x => x.id === id);
+  if (!student) {
     try {
-      if (editingId) {
-        await apiFetch(`/api/students/${editingId}`, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ name, batch_id: batchId, belt_level: belt }) });
-        toast('✔ Student updated', 'success');
-      } else {
-        await apiFetch('/api/students', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ name, batch_id: batchId, belt_level: belt }) });
-        toast('✔ Student added', 'success');
+      const data = await apiFetch(`/api/students/${id}/profile`);
+      student = data.student;
+      student.batch_id = data.student.batch_id;
+    } catch(e) { toast('Failed to load student data', 'error'); return; }
+  }
+
+  document.getElementById('modalTitle').textContent   = 'Edit Student';
+  document.getElementById('modalSaveBtn').textContent = 'Update';
+  document.getElementById('mName').value  = student.name;
+  document.getElementById('mPhone').value = student.phone_number || '';
+  document.getElementById('mBelt').value  = student.belt_level;
+  populateDojo('mDojo', null);
+  document.getElementById('mDojo').value = student.dojo_id || document.getElementById('sDojo').value;
+  await loadModalBatches();
+  document.getElementById('mBatch').value = student.batch_id;
+  document.getElementById('studentModal').classList.add('open');
+}
+
+function closeModal() { document.getElementById('studentModal').classList.remove('open'); }
+
+async function saveStudent() {
+  const name         = document.getElementById('mName').value.trim();
+  const phone_number = document.getElementById('mPhone').value.trim();
+  const batchId      = document.getElementById('mBatch').value;
+  const belt         = document.getElementById('mBelt').value;
+  if (!name)    { toast('Enter a name', 'error'); return; }
+  if (!batchId) { toast('Select a batch', 'error'); return; }
+  const btn = document.getElementById('modalSaveBtn');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  try {
+    const payload = { name, batch_id: batchId, belt_level: belt, phone_number };
+    if (editingId) {
+      await apiFetch(`/api/students/${editingId}`, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+      toast('✔ Student updated', 'success');
+      // If on profile, reload profile
+      if (document.getElementById('student-profile-view').style.display !== 'none') {
+        openStudentProfile(editingId);
       }
-      closeModal(); await fetchAllStudents(); await loadStats();
-    } catch (e) { toast(e.message || 'Failed to save', 'error'); }
-    finally { btn.disabled = false; btn.textContent = editingId ? 'Update' : 'Save'; }
+    } else {
+      await apiFetch('/api/students', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+      toast('✔ Student added', 'success');
+    }
+    closeModal(); await fetchAllStudents(); await loadStats();
+  } catch (e) { toast(e.message || 'Failed to save', 'error'); }
+  finally { btn.disabled = false; btn.textContent = editingId ? 'Update' : 'Save'; }
+}
+
+async function deleteStudent(id, name) {
+  if (!confirm(`Delete "${name}"? Cannot be undone.`)) return;
+  try {
+    await apiFetch(`/api/students/${id}`, { method:'DELETE' });
+    toast(`🗑 ${name} removed`, 'info');
+    showStudentsList();
+    await fetchAllStudents(); await loadStats();
+  } catch (e) { toast('Failed to delete', 'error'); }
+}
+
+document.getElementById('studentModal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+
+// ══ REPORTS ═════════════════════════════════════════════
+function initReportsPage() {
+  populateDojo('rDojo', '— Select Dojo —');
+  document.getElementById('rDojo').onchange = onRDojoChange;
+
+  const mwSel = document.getElementById('mwDojo');
+  mwSel.innerHTML = '<option value="all">🌐 All Dojos</option>';
+  cachedDojos.forEach(d => mwSel.innerHTML += `<option value="${d.id}">${esc(d.name)}</option>`);
+  mwSel.onchange = onMwDojoChange;
+}
+
+async function onRDojoChange() {
+  const dojoId = document.getElementById('rDojo').value;
+  const sel = document.getElementById('rBatch');
+  sel.innerHTML = '<option value="">— Select Batch —</option>';
+  if (!dojoId) return;
+  try {
+    const batches = await apiFetch('/api/batches?dojo_id=' + dojoId);
+    batches.forEach(b => sel.innerHTML += `<option value="${b.id}">${esc(b.name)}</option>`);
+  } catch (e) { toast('Failed to load batches', 'error'); }
+}
+
+let currentRFilter = 'all';
+
+async function loadReport() {
+  const dojoId  = document.getElementById('rDojo').value;
+  const batchId = document.getElementById('rBatch').value;
+  const date    = document.getElementById('rDate').value;
+  if (!dojoId || !batchId || !date) { toast('Select dojo, batch and date', 'error'); return; }
+  document.getElementById('rPlaceholder').style.display = 'none';
+  try {
+    const { students, summary } = await apiFetch(`/api/reports?dojo_id=${dojoId}&batch_id=${batchId}&date=${date}`);
+    const tbody = document.getElementById('rTable');
+    tbody.innerHTML = '';
+    students.forEach((s, i) => {
+      const st = s.status === 'present' ? 'present' : s.status === 'absent' ? 'absent' : 'none';
+      const pc = st === 'present' ? 'status-present' : st === 'absent' ? 'status-absent' : 'status-pending';
+      const pt = st === 'present' ? 'Present' : st === 'absent' ? 'Absent' : 'Not Marked';
+      const tr = document.createElement('tr');
+      tr.dataset.status = st;
+      tr.innerHTML = `
+        <td class="num-cell">${String(i+1).padStart(2,'0')}</td>
+        <td>
+          <div class="s-name">${esc(s.name)}</div>
+          <div style="margin-top:2px;"><span class="belt-badge ${beltClass(s.belt_level)}">${esc(s.belt_level)}</span></div>
+        </td>
+        <td><span class="status-pill ${pc}">${pt}</span></td>`;
+      tbody.appendChild(tr);
+    });
+    document.getElementById('rTotal').textContent    = summary.total;
+    document.getElementById('rPresent').textContent  = summary.present;
+    document.getElementById('rAbsent').textContent   = summary.absent;
+    document.getElementById('rProgressBar').style.width   = summary.percent + '%';
+    document.getElementById('rProgressLabel').textContent = summary.percent + '%';
+    document.getElementById('rTableCount').textContent =
+      `${summary.total} total · ${summary.present} present · ${summary.absent} absent`;
+    document.getElementById('rStatsArea').style.display = 'block';
+    document.getElementById('rTableCard').style.display = 'block';
+    setRFilter(currentRFilter, document.querySelector(`#rTableCard .rpill[data-f="${currentRFilter}"]`));
+  } catch (e) { toast('Failed to generate report', 'error'); }
+}
+
+function setRFilter(filter, el) {
+  currentRFilter = filter;
+  document.querySelectorAll('#rTableCard .rpill').forEach(p => p.classList.remove('active'));
+  if (el) el.classList.add('active');
+  document.querySelectorAll('#rTable tr').forEach(tr => {
+    tr.style.display = filter === 'all' ? '' : filter === tr.dataset.status ? '' : 'none';
+  });
+}
+
+// ── Monthly no-absences ───────────────────────────────────
+async function onMwDojoChange() {
+  const dojoId = document.getElementById('mwDojo').value;
+  const sel = document.getElementById('mwBatch');
+  sel.innerHTML = '<option value="">All Batches</option>';
+  if (!dojoId || dojoId === 'all') return;
+  try {
+    const batches = await apiFetch('/api/batches?dojo_id=' + dojoId);
+    batches.forEach(b => sel.innerHTML += `<option value="${b.id}">${esc(b.name)}</option>`);
+  } catch (e) { toast('Failed to load batches', 'error'); }
+}
+
+async function loadNoAbsences() {
+  const dojoId  = document.getElementById('mwDojo').value;
+  const batchId = document.getElementById('mwBatch').value;
+  const month   = document.getElementById('mwMonth').value;
+  const year    = document.getElementById('mwYear').value;
+
+  const btn = document.getElementById('mwFindBtn');
+  btn.disabled = true; btn.textContent = 'Loading…';
+  document.getElementById('mwPlaceholder').style.display = 'none';
+  document.getElementById('mwResults').style.display     = 'none';
+
+  try {
+    let url = `/api/attendance/no-absences?dojo_id=${dojoId}&month=${month}&year=${year}`;
+    if (batchId) url += `&batch_id=${batchId}`;
+    const data = await apiFetch(url);
+
+    mwNoAbsData  = data.no_absence_students  || [];
+    mwHadAbsData = data.had_absence_students || [];
+    mwTotalCount = data.total_students || 0;
+
+    document.getElementById('mwTotal').textContent   = mwTotalCount;
+    document.getElementById('mwPerfect').textContent = mwNoAbsData.length;
+
+    const list = document.getElementById('mwPerfectList');
+    if (!mwNoAbsData.length) {
+      list.innerHTML = `<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;font-weight:700;">No students with zero absences found.</div>`;
+    } else {
+      list.innerHTML = mwNoAbsData.map((s, i) => `
+        <div class="perfect-row">
+          <span class="perfect-num">${i+1}</span>
+          <span class="perfect-name">${esc(s.name)}</span>
+          <span class="belt-badge ${beltClass(s.belt_level)}">${esc(s.belt_level)}</span>
+          ${s.dojo_name ? `<span style="font-size:10px;color:var(--muted);">${esc(s.dojo_name)}</span>` : ''}
+        </div>`).join('');
+    }
+
+    const absentCard = document.getElementById('mwAbsentCard');
+    const absentList = document.getElementById('mwAbsentList');
+    if (mwHadAbsData.length) {
+      absentList.innerHTML = mwHadAbsData.map((s, i) => `
+        <div class="perfect-row" style="border-color:rgba(255,71,87,0.08);">
+          <span class="perfect-num">${i+1}</span>
+          <span class="perfect-name">${esc(s.name)}</span>
+          <span class="belt-badge ${beltClass(s.belt_level)}">${esc(s.belt_level)}</span>
+        </div>`).join('');
+      absentCard.style.display = 'block';
+    } else {
+      absentCard.style.display = 'none';
+    }
+
+    document.getElementById('mwResults').style.display = 'block';
+  } catch (e) {
+    toast('Failed: ' + (e.message || ''), 'error');
+    document.getElementById('mwPlaceholder').style.display = 'block';
+  } finally {
+    btn.disabled = false; btn.textContent = 'Find Students with Zero Absences';
   }
+}
 
-  async function deleteStudent(id, name) {
-    if (!confirm(`Delete "${name}"? Cannot be undone.`)) return;
-    try {
-      await apiFetch(`/api/students/${id}`, { method:'DELETE' });
-      toast(`🗑 ${name} removed`, 'info');
-      await fetchAllStudents(); await loadStats();
-    } catch (e) { toast('Failed to delete', 'error'); }
+function generateMonthlyWhatsApp() {
+  const month    = Number(document.getElementById('mwMonth').value);
+  const year     = document.getElementById('mwYear').value;
+  const dojoOpt  = document.getElementById('mwDojo');
+  const dojoName = dojoOpt.options[dojoOpt.selectedIndex]?.text || 'Dojo';
+
+  let msg = `🥋 *ZERO ABSENCES — ${MONTH_NAMES[month].toUpperCase()} ${year}*\n`;
+  msg += `🏯 ${dojoName}\n━━━━━━━━━━━━━━━━━\n`;
+  msg += `⭐ Students with *zero absences* this month:\n\n`;
+
+  if (!mwNoAbsData.length) {
+    msg += `_(No students with zero absences)_\n`;
+  } else {
+    mwNoAbsData.forEach((s, i) => { msg += `${i+1}. ${s.name} — ${s.belt_level}\n`; });
+    msg += `\n✅ ${mwNoAbsData.length} / ${mwTotalCount} students — Zero Absences!`;
   }
+  msg += `\n\nKeep training hard! 💪🥋 OSU!`;
 
-  document.getElementById('studentModal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+  document.getElementById('waMessageBox').textContent = msg;
+  document.getElementById('waModal').classList.add('open');
+}
 
-  // ══ REPORTS ════════════════════════════════════════════
-  function initReportsPage() {
-    populateDojo('rDojo',  '— Select Dojo —');
-    populateDojo('mwDojo', '— Select Dojo —');
-    document.getElementById('rDojo').onchange  = onRDojoChange;
-    document.getElementById('mwDojo').onchange = onMwDojoChange;
+// ══ FEES ════════════════════════════════════════════════
+function initFeesPage() {
+  populateDojo('fDojo', '— Select Dojo —');
+  document.getElementById('fDojo').onchange = onFDojoChange;
+  document.getElementById('fMonth').value = new Date().getMonth() + 1;
+}
+
+function onFDojoChange() {
+  feeData = []; currentFeeFilter = 'all';
+  document.getElementById('fStatsRow').style.display   = 'none';
+  document.getElementById('fTableCard').style.display  = 'none';
+  document.getElementById('fPlaceholder').style.display = 'block';
+  document.getElementById('fBatchGroups').innerHTML    = '';
+}
+
+async function loadFees() {
+  const dojoId  = document.getElementById('fDojo').value;
+  fMonth_cur    = document.getElementById('fMonth').value;
+  fYear_cur     = document.getElementById('fYear').value;
+  if (!dojoId) { toast('Select a dojo', 'error'); return; }
+  document.getElementById('fBatchGroups').innerHTML     = `<div class="card"><div class="placeholder"><span class="spinner"></span>Loading…</div></div>`;
+  document.getElementById('fPlaceholder').style.display = 'none';
+  document.getElementById('fTableCard').style.display   = 'block';
+  document.getElementById('fStatsRow').style.display    = 'none';
+  currentFeeFilter = 'all';
+  document.querySelectorAll('[id^="frPill-"]').forEach(p => p.classList.remove('active'));
+  document.getElementById('frPill-all').classList.add('active');
+  try {
+    feeData = await apiFetch(`/api/fees?dojo_id=${dojoId}&month=${fMonth_cur}&year=${fYear_cur}`);
+    renderFeeGroups();
+  } catch (e) {
+    document.getElementById('fBatchGroups').innerHTML = `<div class="card"><div class="placeholder"><span>⚠️</span>Failed</div></div>`;
+    toast('Error loading fees', 'error');
   }
+}
 
-  async function onRDojoChange() {
-    const dojoId = document.getElementById('rDojo').value;
-    const sel = document.getElementById('rBatch');
-    sel.innerHTML = '<option value="">— Select Batch —</option>';
-    if (!dojoId) return;
-    try {
-      const batches = await apiFetch('/api/batches?dojo_id=' + dojoId);
-      batches.forEach(b => sel.innerHTML += `<option value="${b.id}">${esc(b.name)}</option>`);
-    } catch (e) { toast('Failed to load batches', 'error'); }
-  }
+function renderFeeGroups() {
+  const container = document.getElementById('fBatchGroups');
+  container.innerHTML = '';
+  if (!feeData.length) { container.innerHTML = `<div class="card"><div class="placeholder"><span>👥</span>No students found</div></div>`; return; }
 
-  let currentRFilter = 'all';
+  const groups = {}; const order = [];
+  feeData.forEach(s => {
+    const bn = s.batch_name || 'Unknown';
+    if (!groups[bn]) { groups[bn] = []; order.push(bn); }
+    groups[bn].push(s);
+  });
 
-  async function loadReport() {
-    const dojoId  = document.getElementById('rDojo').value;
-    const batchId = document.getElementById('rBatch').value;
-    const date    = document.getElementById('rDate').value;
-    if (!dojoId || !batchId || !date) { toast('Select dojo, batch and date', 'error'); return; }
-    document.getElementById('rPlaceholder').style.display = 'none';
-    try {
-      const { students, summary } = await apiFetch(`/api/reports?dojo_id=${dojoId}&batch_id=${batchId}&date=${date}`);
-      const tbody = document.getElementById('rTable');
-      tbody.innerHTML = '';
-      students.forEach((s, i) => {
-        const st = s.status === 'present' ? 'present' : s.status === 'absent' ? 'absent' : 'none';
-        const pc = st === 'present' ? 'status-present' : st === 'absent' ? 'status-absent' : 'status-pending';
-        const pt = st === 'present' ? 'Present' : st === 'absent' ? 'Absent' : 'Not Marked';
-        const tr = document.createElement('tr');
-        tr.dataset.status = st;
-        tr.innerHTML = `
+  order.forEach(batchName => {
+    const students = groups[batchName];
+    const allPaid  = students.every(s => s.fee_status === 'paid');
+    const card     = document.createElement('div');
+    card.className = 'card'; card.style.marginBottom = '10px';
+
+    const rows = students.map((s, i) => {
+      const isPaid = s.fee_status === 'paid';
+      return `
+        <tr data-fee-status="${isPaid ? 'paid' : 'unpaid'}" data-batch="${esc(batchName)}" data-sid="${s.id}">
           <td class="num-cell">${String(i+1).padStart(2,'0')}</td>
           <td>
             <div class="s-name">${esc(s.name)}</div>
             <div style="margin-top:2px;"><span class="belt-badge ${beltClass(s.belt_level)}">${esc(s.belt_level)}</span></div>
           </td>
-          <td><span class="status-pill ${pc}">${pt}</span></td>`;
-        tbody.appendChild(tr);
-      });
-      document.getElementById('rTotal').textContent    = summary.total;
-      document.getElementById('rPresent').textContent  = summary.present;
-      document.getElementById('rAbsent').textContent   = summary.absent;
-      document.getElementById('rPercent').textContent  = summary.percent + '%';
-      document.getElementById('rProgressBar').style.width   = summary.percent + '%';
-      document.getElementById('rProgressLabel').textContent = summary.percent + '%';
-      document.getElementById('rTableCount').textContent =
-        `${summary.total} total · ${summary.present} present · ${summary.absent} absent`;
-      document.getElementById('rStatsArea').style.display = 'block';
-      document.getElementById('rTableCard').style.display = 'block';
-      setRFilter(currentRFilter, document.querySelector(`#rTableCard .rpill[data-f="${currentRFilter}"]`));
-    } catch (e) { toast('Failed to generate report', 'error'); }
+          <td>
+            <div class="fee-toggle" id="ft-${s.id}">
+              <button class="fee-toggle-btn paid   ${isPaid  ? 'active':''}" onclick="toggleFee(${s.id},true,this)">✔ Paid</button>
+              <button class="fee-toggle-btn unpaid ${!isPaid ? 'active':''}" onclick="toggleFee(${s.id},false,this)">✖ Unpaid</button>
+            </div>
+          </td>
+        </tr>`;
+    }).join('');
+
+    card.innerHTML = `
+      <div class="batch-hdr">
+        <span>📌 ${esc(batchName)}</span>
+        <button class="btn btn-gold btn-sm" id="bulk-${esc(batchName)}" onclick="markBatchPaid('${esc(batchName)}')">
+          ${allPaid ? '✔ All Paid' : '💰 Mark All Paid'}
+        </button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Student</th><th>Fee Status</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>`;
+    container.appendChild(card);
+  });
+
+  updateFeeStats();
+  applyFeeFilter();
+}
+
+async function toggleFee(studentId, paid, btn) {
+  const status = paid ? 'paid' : 'unpaid';
+  const s = feeData.find(x => x.id === studentId);
+  if (s) s.fee_status = status;
+  const toggle = document.getElementById('ft-' + studentId);
+  if (toggle) {
+    toggle.querySelectorAll('.fee-toggle-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
   }
-
-  function setRFilter(filter, el) {
-    currentRFilter = filter;
-    document.querySelectorAll('#rTableCard .rpill').forEach(p => p.classList.remove('active'));
-    if (el) el.classList.add('active');
-    document.querySelectorAll('#rTable tr').forEach(tr => {
-      tr.style.display = filter === 'all' ? '' : filter === tr.dataset.status ? '' : 'none';
-    });
+  const tr = btn.closest('tr');
+  if (tr) { tr.dataset.feeStatus = status; updateBatchBulkBtn(tr.dataset.batch); }
+  updateFeeStats(); applyFeeFilter();
+  try {
+    await apiFetch('/api/fees', { method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ student_id: studentId, month: fMonth_cur, year: fYear_cur, status }) });
+  } catch (e) {
+    toast('Failed to save fee', 'error');
+    if (s) s.fee_status = paid ? 'unpaid' : 'paid';
+    renderFeeGroups();
   }
+}
 
-  // ══ MONTHLY — NO ABSENCES (uses /api/attendance/no-absences) ══
-  async function onMwDojoChange() {
-    const dojoId = document.getElementById('mwDojo').value;
-    const sel = document.getElementById('mwBatch');
-    sel.innerHTML = '<option value="">All Batches</option>';
-    if (!dojoId) return;
-    try {
-      const batches = await apiFetch('/api/batches?dojo_id=' + dojoId);
-      batches.forEach(b => sel.innerHTML += `<option value="${b.id}">${esc(b.name)}</option>`);
-    } catch (e) { toast('Failed to load batches', 'error'); }
-  }
+async function markAllFees(status) {
+  feeData.forEach(s => { s.fee_status = status; });
+  document.querySelectorAll('#fBatchGroups .fee-toggle').forEach(toggle => {
+    toggle.querySelectorAll('.fee-toggle-btn').forEach(b => b.classList.remove('active'));
+    toggle.querySelector(status === 'paid' ? '.paid' : '.unpaid')?.classList.add('active');
+  });
+  document.querySelectorAll('#fBatchGroups tr[data-fee-status]').forEach(tr => { tr.dataset.feeStatus = status; });
+  document.querySelectorAll('#fBatchGroups [id^="bulk-"]').forEach(btn => {
+    btn.textContent = status === 'paid' ? '✔ All Paid' : '💰 Mark All Paid';
+  });
+  updateFeeStats(); applyFeeFilter();
+  try {
+    await Promise.all(feeData.map(s => apiFetch('/api/fees', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ student_id: s.id, month: fMonth_cur, year: fYear_cur, status })
+    })));
+    toast(`✔ All marked as ${status}`, 'success');
+  } catch (e) { toast('Some updates may have failed', 'error'); }
+}
 
-  async function loadNoAbsences() {
-    const dojoId  = document.getElementById('mwDojo').value;
-    const batchId = document.getElementById('mwBatch').value;
-    const month   = document.getElementById('mwMonth').value;
-    const year    = document.getElementById('mwYear').value;
-
-    if (!dojoId) { toast('Select a dojo', 'error'); return; }
-
-    const btn = document.getElementById('mwFindBtn');
-    btn.disabled = true;
-    btn.textContent = 'Loading…';
-
-    document.getElementById('mwPlaceholder').style.display = 'none';
-    document.getElementById('mwResults').style.display     = 'none';
-
-    try {
-      let url = `/api/attendance/no-absences?dojo_id=${dojoId}&month=${month}&year=${year}`;
-      if (batchId) url += `&batch_id=${batchId}`;
-
-      const data = await apiFetch(url);
-
-      const noAbsence  = data.no_absence_students  || [];
-      const hadAbsence = data.had_absence_students  || [];
-      const total      = data.total_students || (noAbsence.length + hadAbsence.length);
-
-      mwNoAbsenceData  = noAbsence;
-      mwHadAbsenceData = hadAbsence;
-      mwTotalCount     = total;
-
-      document.getElementById('mwTotal').textContent   = total;
-      document.getElementById('mwPerfect').textContent = noAbsence.length;
-
-      // No-absence list
-      const list = document.getElementById('mwPerfectList');
-      if (noAbsence.length === 0) {
-        list.innerHTML = `<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px;font-weight:700;">
-          Every student had at least one absence, or no attendance has been recorded this month.
-        </div>`;
-      } else {
-        list.innerHTML = noAbsence.map((s, i) => `
-          <div class="perfect-row">
-            <span class="perfect-num">${i+1}</span>
-            <span class="perfect-name">${esc(s.name)}</span>
-            <span class="belt-badge ${beltClass(s.belt_level)}">${esc(s.belt_level)}</span>
-          </div>`).join('');
-      }
-
-      // Had-absence list
-      const absentCard = document.getElementById('mwAbsentCard');
-      const absentList = document.getElementById('mwAbsentList');
-      if (hadAbsence.length > 0) {
-        absentList.innerHTML = hadAbsence.map((s, i) => `
-          <div class="perfect-row" style="border-color:rgba(255,71,87,0.08);">
-            <span class="perfect-num">${i+1}</span>
-            <span class="perfect-name">${esc(s.name)}</span>
-            <span class="belt-badge ${beltClass(s.belt_level)}">${esc(s.belt_level)}</span>
-          </div>`).join('');
-        absentCard.style.display = 'block';
-      } else {
-        absentCard.style.display = 'none';
-      }
-
-      document.getElementById('mwResults').style.display = 'block';
-    } catch (e) {
-      toast('Failed to load data: ' + (e.message || ''), 'error');
-      document.getElementById('mwPlaceholder').style.display = 'block';
-      console.error(e);
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'Find Students with No Absences';
-    }
-  }
-
-  function generateMonthlyWhatsApp() {
-    const month    = document.getElementById('mwMonth').value;
-    const year     = document.getElementById('mwYear').value;
-    const monthStr = MONTH_NAMES[Number(month)];
-    const dojoOpt  = document.getElementById('mwDojo');
-    const dojoName = dojoOpt.options[dojoOpt.selectedIndex]?.text || 'Dojo';
-
-    let msg = `🥋 *NO ABSENCES — ${monthStr.toUpperCase()} ${year}*\n`;
-    msg += `🏯 ${dojoName}\n`;
-    msg += `━━━━━━━━━━━━━━━━━\n`;
-    msg += `⭐ Students with *zero absences* this month:\n\n`;
-
-    if (mwNoAbsenceData.length === 0) {
-      msg += `_(No students with zero absences)_\n`;
-    } else {
-      mwNoAbsenceData.forEach((s, i) => {
-        msg += `${i+1}. ${s.name} — ${s.belt_level}\n`;
-      });
-      msg += `\n✅ ${mwNoAbsenceData.length} / ${mwTotalCount} students — Zero Absences!\n`;
-    }
-
-    if (mwHadAbsenceData.length > 0) {
-      msg += `\n━━━━━━━━━━━━━━━━━\n`;
-      msg += `⚠️ Students with at least one absence:\n\n`;
-      mwHadAbsenceData.forEach((s, i) => {
-        msg += `${i+1}. ${s.name} — ${s.belt_level}\n`;
-      });
-    }
-
-    msg += `\nKeep training hard! 💪🥋`;
-
-    document.getElementById('waMessageBox').textContent = msg;
-    document.getElementById('waModal').classList.add('open');
-  }
-
-  // ══ FEES ══════════════════════════════════════════════
-  function initFeesPage() {
-    populateDojo('fDojo', '— Select Dojo —');
-    document.getElementById('fDojo').onchange = onFDojoChange;
-  }
-
-  function onFDojoChange() {
-    feeData = [];
-    document.getElementById('fStatsRow').style.display      = 'none';
-    document.getElementById('fTableCard').style.display     = 'none';
-    document.getElementById('fPlaceholder').style.display   = 'block';
-    document.getElementById('fReportSection').style.display = 'none';
-    document.getElementById('fBatchGroups').innerHTML       = '';
-  }
-
-  async function loadFees() {
-    const dojoId = document.getElementById('fDojo').value;
-    fMonth_cur   = document.getElementById('fMonth').value;
-    fYear_cur    = document.getElementById('fYear').value;
-    if (!dojoId) { toast('Select a dojo', 'error'); return; }
-
-    document.getElementById('fBatchGroups').innerHTML      = `<div class="card"><div class="placeholder"><span class="spinner"></span>Loading…</div></div>`;
-    document.getElementById('fPlaceholder').style.display  = 'none';
-    document.getElementById('fTableCard').style.display    = 'block';
-    document.getElementById('fStatsRow').style.display     = 'none';
-    document.getElementById('fReportSection').style.display = 'none';
-
-    try {
-      feeData = await apiFetch(`/api/fees?dojo_id=${dojoId}&month=${fMonth_cur}&year=${fYear_cur}`);
-      renderFeeGroups();
-    } catch (e) {
-      document.getElementById('fBatchGroups').innerHTML = `<div class="card"><div class="placeholder"><span>⚠️</span>Failed to load fees</div></div>`;
-      toast('Error loading fees', 'error');
-    }
-  }
-
-  function renderFeeGroups() {
-    const container = document.getElementById('fBatchGroups');
-    container.innerHTML = '';
-
-    if (!feeData.length) {
-      container.innerHTML = `<div class="card"><div class="placeholder"><span>👥</span>No students found</div></div>`;
-      document.getElementById('fReportSection').style.display = 'none';
-      return;
-    }
-
-    const groups = {};
-    const order  = [];
-    feeData.forEach(s => {
-      const bn = s.batch_name || 'Unknown Batch';
-      if (!groups[bn]) { groups[bn] = []; order.push(bn); }
-      groups[bn].push(s);
-    });
-
-    order.forEach(batchName => {
-      const students = groups[batchName];
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.style.marginBottom = '10px';
-
-      const rows = students.map((s, i) => {
-        const isPaid = s.fee_status === 'paid';
-        return `
-          <tr>
-            <td class="num-cell">${String(i+1).padStart(2,'0')}</td>
-            <td>
-              <div class="s-name">${esc(s.name)}</div>
-              <div style="margin-top:2px;"><span class="belt-badge ${beltClass(s.belt_level)}">${esc(s.belt_level)}</span></div>
-            </td>
-            <td>
-              <div class="fee-toggle" id="fee-toggle-${s.id}">
-                <button class="fee-toggle-btn paid   ${isPaid  ? 'active' : ''}" onclick="toggleFee(${s.id},true,this)">✔ Paid</button>
-                <button class="fee-toggle-btn unpaid ${!isPaid ? 'active' : ''}" onclick="toggleFee(${s.id},false,this)">✖ Unpaid</button>
-              </div>
-            </td>
-          </tr>`;
-      }).join('');
-
-      card.innerHTML = `
-        <div class="card-label">📌 ${esc(batchName)}</div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>#</th><th>Student</th><th>Fee Status</th></tr></thead>
-            <tbody>${rows}</tbody>
-          </table>
-        </div>`;
-      container.appendChild(card);
-    });
-
-    updateFeeStats();
-    renderFeeReport();
-  }
-
-  async function toggleFee(studentId, paid, btn) {
-    const status = paid ? 'paid' : 'unpaid';
-    // Update local data
-    const s = feeData.find(x => x.id === studentId);
-    if (s) s.fee_status = status;
-
-    // Update UI for this toggle immediately
-    const toggle = document.getElementById('fee-toggle-' + studentId);
+async function markBatchPaid(batchName) {
+  const unpaid = feeData.filter(s => s.batch_name === batchName && s.fee_status !== 'paid');
+  if (!unpaid.length) { toast('All already paid', 'info'); return; }
+  unpaid.forEach(s => { s.fee_status = 'paid'; });
+  document.querySelectorAll(`#fBatchGroups tr[data-batch="${batchName}"]`).forEach(tr => {
+    tr.dataset.feeStatus = 'paid';
+    const toggle = document.getElementById('ft-' + tr.dataset.sid);
     if (toggle) {
       toggle.querySelectorAll('.fee-toggle-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+      toggle.querySelector('.paid')?.classList.add('active');
     }
+  });
+  updateBatchBulkBtn(batchName); updateFeeStats(); applyFeeFilter();
+  try {
+    await Promise.all(unpaid.map(s => apiFetch('/api/fees', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ student_id: s.id, month: fMonth_cur, year: fYear_cur, status:'paid' })
+    })));
+    toast(`✔ ${batchName} marked paid`, 'success');
+  } catch (e) { toast('Some updates may have failed', 'error'); }
+}
 
-    updateFeeStats();
-    renderFeeReport();
+function updateBatchBulkBtn(batchName) {
+  const btn = document.getElementById('bulk-' + batchName);
+  if (!btn) return;
+  const allPaid = feeData.filter(s => s.batch_name === batchName).every(s => s.fee_status === 'paid');
+  btn.textContent = allPaid ? '✔ All Paid' : '💰 Mark All Paid';
+}
 
-    // Persist to server
-    try {
-      await apiFetch('/api/fees', {
-        method: 'POST',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ student_id: studentId, month: fMonth_cur, year: fYear_cur, status })
-      });
-    } catch (e) {
-      toast('Failed to save fee status', 'error');
-      // Revert local state on failure
-      if (s) s.fee_status = paid ? 'unpaid' : 'paid';
-      if (toggle) {
-        toggle.querySelectorAll('.fee-toggle-btn').forEach(b => b.classList.remove('active'));
-        const revertBtn = toggle.querySelector(paid ? '.unpaid' : '.paid');
-        if (revertBtn) revertBtn.classList.add('active');
-      }
-      updateFeeStats();
-      renderFeeReport();
+function updateFeeStats() {
+  const total   = feeData.length;
+  const paid    = feeData.filter(s => s.fee_status === 'paid').length;
+  const unpaid  = total - paid;
+  const percent = total ? Math.round((paid / total) * 100) : 0;
+  document.getElementById('fStatsRow').style.display = 'grid';
+  document.getElementById('fTotal').textContent   = total;
+  document.getElementById('fPaid').textContent    = paid;
+  document.getElementById('fUnpaid').textContent  = unpaid;
+  document.getElementById('fPercent').textContent = percent + '%';
+}
+
+function setFeeFilter(filter, el) {
+  currentFeeFilter = filter;
+  ['all','paid','unpaid'].forEach(f => document.getElementById('frPill-' + f)?.classList.remove('active'));
+  if (el) el.classList.add('active');
+  applyFeeFilter();
+}
+
+function applyFeeFilter() {
+  document.querySelectorAll('#fBatchGroups tr[data-fee-status]').forEach(tr => {
+    tr.style.display = currentFeeFilter === 'all' ? '' : tr.dataset.feeStatus === currentFeeFilter ? '' : 'none';
+  });
+}
+
+function generateFeeWhatsApp() {
+  const month    = Number(fMonth_cur);
+  const year     = fYear_cur;
+  const dojoOpt  = document.getElementById('fDojo');
+  const dojoName = dojoOpt.options[dojoOpt.selectedIndex]?.text || 'Dojo';
+  const paid     = feeData.filter(s => s.fee_status === 'paid');
+  const unpaid   = feeData.filter(s => s.fee_status !== 'paid');
+  const pct      = feeData.length ? Math.round((paid.length / feeData.length) * 100) : 0;
+
+  let msg = `💰 *FEE STATUS — ${MONTH_NAMES[month].toUpperCase()} ${year}*\n`;
+  msg += `🏯 ${dojoName}\n━━━━━━━━━━━━━━━━━\n`;
+  msg += `📊 ${paid.length}/${feeData.length} paid (${pct}%)\n\n`;
+  if (paid.length) { msg += `✅ *Paid (${paid.length}):*\n`; paid.forEach((s,i) => { msg += `${i+1}. ${s.name}\n`; }); }
+  if (unpaid.length) { msg += `\n❌ *Unpaid (${unpaid.length}):*\n`; unpaid.forEach((s,i) => { msg += `${i+1}. ${s.name}\n`; }); }
+  msg += `\nPlease clear dues at the earliest. 🙏🥋`;
+
+  document.getElementById('waMessageBox').textContent = msg;
+  document.getElementById('waModal').classList.add('open');
+}
+
+// ══ BELT TEST ═══════════════════════════════════════════
+function initBeltTestPage() {
+  populateDojo('btDojo', '— Select Dojo —');
+  document.getElementById('btDojo').onchange = onBtDojoChange;
+  btStudents = []; btIneligibleIds = new Set();
+  document.getElementById('btContent').style.display     = 'none';
+  document.getElementById('btPlaceholder').style.display = 'block';
+  document.getElementById('btResults').style.display     = 'none';
+}
+
+async function onBtDojoChange() {
+  const dojoId = document.getElementById('btDojo').value;
+  const sel    = document.getElementById('btBatch');
+  sel.innerHTML = '<option value="">All Batches</option>';
+  if (!dojoId) return;
+  try {
+    const batches = await apiFetch('/api/batches?dojo_id=' + dojoId);
+    batches.forEach(b => sel.innerHTML += `<option value="${b.id}">${esc(b.name)}</option>`);
+  } catch (e) { toast('Failed to load batches', 'error'); }
+}
+
+async function loadBeltTest() {
+  const dojoId  = document.getElementById('btDojo').value;
+  const batchId = document.getElementById('btBatch').value;
+  if (!dojoId) { toast('Select a dojo', 'error'); return; }
+  btIneligibleIds = new Set();
+  document.getElementById('btResults').style.display = 'none';
+  document.getElementById('btContent').style.display = 'none';
+  document.getElementById('btPlaceholder').style.display = 'block';
+  document.getElementById('btPlaceholder').innerHTML = `<div class="card"><div class="placeholder"><span class="spinner"></span>Loading students…</div></div>`;
+
+  try {
+    let url = `/api/belt-test/students?dojo_id=${dojoId}`;
+    if (batchId) url += `&batch_id=${batchId}`;
+    btStudents = await apiFetch(url);
+    if (!btStudents.length) {
+      toast('No students found', 'error');
+      document.getElementById('btPlaceholder').innerHTML = `<div class="card"><div class="placeholder"><span>👥</span>No students found for this selection</div></div>`;
+      return;
     }
+    renderDedicationLeaderboard();
+    renderBeltTestList();
+    document.getElementById('btPlaceholder').style.display = 'none';
+    document.getElementById('btContent').style.display     = 'block';
+  } catch (e) {
+    toast('Failed to load students: ' + (e.message || ''), 'error');
+    document.getElementById('btPlaceholder').innerHTML = `<div class="card"><div class="placeholder"><span>⚠️</span>Failed to load. Check connection.</div></div>`;
   }
+}
 
-  async function markAllFees(status) {
-    // Optimistically update all local state
-    feeData.forEach(s => { s.fee_status = status; });
+function renderDedicationLeaderboard() {
+  // Sort by fewest absences, then highest attendance %
+  const sorted = [...btStudents].sort((a, b) => {
+    const aa = a.attendance_stats || { absences:0, percentage:0 };
+    const ba = b.attendance_stats || { absences:0, percentage:0 };
+    if (aa.absences !== ba.absences) return aa.absences - ba.absences;
+    return ba.percentage - aa.percentage;
+  });
 
-    // Update all toggles in DOM
-    document.querySelectorAll('.fee-toggle').forEach(toggle => {
-      toggle.querySelectorAll('.fee-toggle-btn').forEach(b => b.classList.remove('active'));
-      const target = toggle.querySelector(status === 'paid' ? '.paid' : '.unpaid');
-      if (target) target.classList.add('active');
+  const top = sorted.slice(0, Math.min(sorted.length, 5));
+
+  const rankEmojis = ['🥇','🥈','🥉'];
+  const rankClasses = ['gold','silver','bronze'];
+
+  const rows = top.map((s, i) => {
+    const att = s.attendance_stats || { absences:0, percentage:0, total:0 };
+    const pctColor = att.percentage >= 80 ? 'good' : att.percentage >= 60 ? 'warn' : 'bad';
+    const rankHtml = i < 3
+      ? `<div class="ded-rank ${rankClasses[i]}">${rankEmojis[i]}</div>`
+      : `<div class="ded-rank other">${i+1}</div>`;
+
+    return `<div class="ded-row">
+      ${rankHtml}
+      <div class="ded-info">
+        <div class="ded-name">${esc(s.name)}</div>
+        <div class="ded-sub">
+          <span class="belt-badge ${beltClass(s.belt_level)}" style="font-size:10px;">${esc(s.belt_level)}</span>
+          <span style="margin-left:6px;">${esc(s.batch_name || '')}</span>
+        </div>
+      </div>
+      <div class="ded-badge">
+        <div class="ded-att ${pctColor}">${att.percentage}%</div>
+        <div class="ded-att-sub">${att.absences} absent</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('btDedicationList').innerHTML = rows ||
+    `<div style="text-align:center;padding:16px;color:var(--muted);font-size:13px;">No attendance data available</div>`;
+}
+
+function renderBeltTestList() {
+  document.getElementById('btTotal').textContent      = btStudents.length;
+  document.getElementById('btIneligible').textContent = btIneligibleIds.size;
+
+  const container = document.getElementById('btList');
+  container.innerHTML = '';
+
+  const groups = {}; const order = [];
+  btStudents.forEach(s => {
+    const bn = s.batch_name || 'Unknown';
+    if (!groups[bn]) { groups[bn] = []; order.push(bn); }
+    groups[bn].push(s);
+  });
+
+  order.forEach(batchName => {
+    const hdr = document.createElement('div');
+    hdr.className = 'bt-batch-hdr';
+    hdr.textContent = '📌 ' + batchName;
+    container.appendChild(hdr);
+
+    groups[batchName].forEach(s => {
+      const isIneligible = btIneligibleIds.has(s.id);
+      const nb  = nextBeltLabel(s.belt_level);
+      const att = s.attendance_stats || { absences:0, percentage:0 };
+      const row = document.createElement('div');
+      row.className = 'bt-row';
+      row.id = `bt-row-${s.id}`;
+      row.innerHTML = `
+        <div class="bt-check ${isIneligible ? 'ineligible' : ''}" id="bt-chk-${s.id}" onclick="toggleIneligible(${s.id})">
+          ${isIneligible ? '✖' : ''}
+        </div>
+        <div class="bt-info">
+          <div class="s-name" style="font-size:14px;">${esc(s.name)}</div>
+          <div style="margin-top:2px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+            <span class="belt-badge ${beltClass(s.belt_level)}" style="font-size:10px;">${esc(s.belt_level)}</span>
+            <span style="font-size:10px;color:${att.absences === 0 ? 'var(--present)' : att.absences <= 2 ? 'var(--gold)' : 'var(--absent)'};">
+              ${att.absences} absent · ${att.percentage}%
+            </span>
+          </div>
+        </div>
+        <div class="bt-arrow ${isIneligible ? 'skipped' : 'promoted'}" id="bt-arrow-${s.id}">
+          ${isIneligible ? '🔒 Hold' : `→ ${esc(nb)}`}
+        </div>`;
+      container.appendChild(row);
+    });
+  });
+}
+
+function toggleIneligible(id) {
+  if (btIneligibleIds.has(id)) btIneligibleIds.delete(id);
+  else btIneligibleIds.add(id);
+  const s  = btStudents.find(x => x.id === id);
+  const nb = nextBeltLabel(s.belt_level);
+  const chk   = document.getElementById('bt-chk-' + id);
+  const arrow = document.getElementById('bt-arrow-' + id);
+  const ineligible = btIneligibleIds.has(id);
+  chk.className   = 'bt-check' + (ineligible ? ' ineligible' : '');
+  chk.textContent = ineligible ? '✖' : '';
+  arrow.className = 'bt-arrow ' + (ineligible ? 'skipped' : 'promoted');
+  arrow.textContent = ineligible ? '🔒 Hold' : `→ ${nb}`;
+  document.getElementById('btIneligible').textContent = btIneligibleIds.size;
+}
+
+function btSelectAll()  { btStudents.forEach(s => btIneligibleIds.add(s.id));    renderBeltTestList(); }
+function btSelectNone() { btIneligibleIds.clear(); renderBeltTestList(); }
+
+function confirmBeltTest() {
+  const eligible   = btStudents.filter(s => !btIneligibleIds.has(s.id));
+  const ineligible = btStudents.filter(s => btIneligibleIds.has(s.id));
+  const txt = document.getElementById('btConfirmText');
+  txt.innerHTML = `
+    <b style="color:#fff;">You are about to promote ${eligible.length} student(s).</b><br><br>
+    <span style="color:var(--present);">✅ Will be promoted (${eligible.length}):</span><br>
+    ${eligible.map(s => `${s.name} → ${nextBeltLabel(s.belt_level)}`).join('<br>') || 'None'}<br><br>
+    <span style="color:var(--absent);">🔒 Will stay (${ineligible.length}):</span><br>
+    ${ineligible.map(s => `${s.name} (${s.belt_level})`).join('<br>') || 'None'}`;
+  document.getElementById('btConfirmModal').classList.add('open');
+}
+
+function closeBtModal() { document.getElementById('btConfirmModal').classList.remove('open'); }
+
+async function executeBeltTest() {
+  const btn = document.getElementById('btDoPromote');
+  btn.disabled = true; btn.textContent = 'Promoting…';
+  try {
+    const studentIds = btStudents.map(s => s.id);
+    const ineligibleIds = [...btIneligibleIds];
+    const result = await apiFetch('/api/belt-test/promote', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ student_ids: studentIds, ineligible_ids: ineligibleIds })
+    });
+    closeBtModal();
+
+    const resList = document.getElementById('btResultList');
+    resList.innerHTML = '';
+    result.promoted.forEach(p => {
+      const div = document.createElement('div');
+      div.className = 'perfect-row';
+      div.innerHTML = `<span class="perfect-num">✅</span><span class="perfect-name">${esc(btStudents.find(s=>s.id===p.id)?.name||'')}</span><span style="font-size:12px;color:var(--present);">${esc(p.old_belt)} → ${esc(p.new_belt)}</span>`;
+      resList.appendChild(div);
+    });
+    result.skipped.forEach(p => {
+      const div = document.createElement('div');
+      div.className = 'perfect-row';
+      div.style.borderColor = 'rgba(255,71,87,0.1)';
+      div.innerHTML = `<span class="perfect-num">🔒</span><span class="perfect-name">${esc(btStudents.find(s=>s.id===p.id)?.name||'')}</span><span style="font-size:12px;color:var(--absent);">Stays at ${esc(p.belt)}</span>`;
+      resList.appendChild(div);
     });
 
-    updateFeeStats();
-    renderFeeReport();
-
-    // Save all to server
-    try {
-      await Promise.all(feeData.map(s =>
-        apiFetch('/api/fees', {
-          method: 'POST',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({ student_id: s.id, month: fMonth_cur, year: fYear_cur, status })
-        })
-      ));
-      toast(`✔ All marked as ${status}`, 'success');
-    } catch (e) {
-      toast('Some updates may have failed', 'error');
-    }
+    document.getElementById('btResults').style.display  = 'block';
+    document.getElementById('btContent').style.display  = 'none';
+    document.getElementById('btPlaceholder').style.display = 'none';
+    toast(`🥋 ${result.promoted.length} students promoted!`, 'success');
+  } catch (e) {
+    toast('Promotion failed: ' + (e.message||''), 'error');
+  } finally {
+    btn.disabled = false; btn.textContent = '✅ Confirm & Promote';
   }
+}
 
-  function updateFeeStats() {
-    const total   = feeData.length;
-    const paid    = feeData.filter(s => s.fee_status === 'paid').length;
-    const unpaid  = total - paid;
-    const percent = total ? Math.round((paid / total) * 100) : 0;
-    document.getElementById('fStatsRow').style.display = 'grid';
-    document.getElementById('fTotal').textContent   = total;
-    document.getElementById('fPaid').textContent    = paid;
-    document.getElementById('fUnpaid').textContent  = unpaid;
-    document.getElementById('fPercent').textContent = percent + '%';
-  }
+document.getElementById('btConfirmModal').addEventListener('click', function(e) { if (e.target===this) closeBtModal(); });
 
-  // ── Fee Report (inline, filterable, shareable) ─────────
-  function renderFeeReport() {
-    if (!feeData.length) return;
-    document.getElementById('fReportSection').style.display = 'block';
-    setFeeFilter(currentFeeFilter, document.getElementById('frPill-' + currentFeeFilter));
-  }
-
-  function setFeeFilter(filter, el) {
-    currentFeeFilter = filter;
-    document.querySelectorAll('#fReportSection .rpill').forEach(p => p.classList.remove('active'));
-    if (el) el.classList.add('active');
-
-    const filtered = filter === 'all' ? feeData
-      : feeData.filter(s => s.fee_status === filter);
-
-    const tbody = document.getElementById('fReportTable');
-    tbody.innerHTML = '';
-    filtered.forEach((s, i) => {
-      const isPaid = s.fee_status === 'paid';
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td class="num-cell">${String(i+1).padStart(2,'0')}</td>
-        <td><div class="s-name">${esc(s.name)}</div></td>
-        <td style="font-size:11px;color:var(--muted);font-weight:700;">${esc(s.batch_name||'')}</td>
-        <td><span class="status-pill ${isPaid ? 'status-present' : 'status-absent'}">${isPaid ? 'Paid' : 'Unpaid'}</span></td>`;
-      tbody.appendChild(tr);
-    });
-
-    const paid   = feeData.filter(s => s.fee_status === 'paid').length;
-    const unpaid = feeData.length - paid;
-    document.getElementById('fReportSummary').textContent =
-      `${feeData.length} total · ${paid} paid · ${unpaid} unpaid · Showing ${filtered.length}`;
-  }
-
-  function generateFeeWhatsApp() {
-    const month    = Number(fMonth_cur);
-    const year     = fYear_cur;
-    const monthStr = MONTH_NAMES[month];
-    const dojoOpt  = document.getElementById('fDojo');
-    const dojoName = dojoOpt.options[dojoOpt.selectedIndex]?.text || 'Dojo';
-
-    const paid   = feeData.filter(s => s.fee_status === 'paid');
-    const unpaid = feeData.filter(s => s.fee_status !== 'paid');
-    const pct    = feeData.length ? Math.round((paid.length / feeData.length) * 100) : 0;
-
-    let msg = `💰 *FEE STATUS — ${monthStr.toUpperCase()} ${year}*\n`;
-    msg += `🏯 ${dojoName}\n`;
-    msg += `━━━━━━━━━━━━━━━━━\n`;
-    msg += `📊 ${paid.length}/${feeData.length} paid (${pct}%)\n\n`;
-
-    if (paid.length) {
-      msg += `✅ *Paid (${paid.length}):*\n`;
-      paid.forEach((s, i) => { msg += `${i+1}. ${s.name} — ${s.batch_name || ''}\n`; });
-    }
-
-    if (unpaid.length) {
-      msg += `\n❌ *Unpaid (${unpaid.length}):*\n`;
-      unpaid.forEach((s, i) => { msg += `${i+1}. ${s.name} — ${s.batch_name || ''}\n`; });
-    }
-
-    msg += `\nPlease clear dues at the earliest. 🙏🥋`;
-
-    document.getElementById('waMessageBox').textContent = msg;
-    document.getElementById('waModal').classList.add('open');
-  }
-
-  // ── WhatsApp ───────────────────────────────────────────
-  function closeWaModal() { document.getElementById('waModal').classList.remove('open'); }
-  function copyWaMessage() {
-    const text = document.getElementById('waMessageBox').textContent;
+// ── WhatsApp ─────────────────────────────────────────────
+function closeWaModal() { document.getElementById('waModal').classList.remove('open'); }
+function copyWaMessage() {
+  const text = document.getElementById('waMessageBox').textContent;
+  if (navigator.clipboard && window.isSecureContext) {
     navigator.clipboard.writeText(text)
       .then(() => toast('✔ Copied!', 'success'))
       .catch(() => toast('Select and copy manually', 'error'));
+  } else {
+    // Fallback for HTTP / non-secure context
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try {
+      document.execCommand('copy');
+      toast('✔ Copied!', 'success');
+    } catch {
+      toast('Select and copy manually', 'error');
+    }
+    document.body.removeChild(ta);
   }
-  document.getElementById('waModal').addEventListener('click', function(e) { if (e.target === this) closeWaModal(); });
+}
+document.getElementById('waModal').addEventListener('click', function(e) { if (e.target===this) closeWaModal(); });
 </script>
 </body>
 </html>
