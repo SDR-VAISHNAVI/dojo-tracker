@@ -317,7 +317,7 @@ def mark_attendance():
             att_date = r.get('date') or date.today().isoformat()
             cur.execute("""
                 INSERT INTO attendance (student_id, status, date)
-                VALUES (%s, %s, %s, 1)
+                VALUES (%s, %s, %s)
                 ON CONFLICT (student_id, date)
                 DO UPDATE SET status = EXCLUDED.status
             """, (r['student_id'], r['status'], att_date))
